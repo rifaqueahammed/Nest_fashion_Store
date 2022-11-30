@@ -49,7 +49,6 @@ module.exports = {
   },
 
 // user Signup
-
   userSignup: (req, res) => {
     res.render("user/signup");
   },
@@ -58,7 +57,7 @@ module.exports = {
     try {
       const body = new User({ ...req.body });
       if (req.body.password === req.body.confirm_password) {
-        User.find({
+        User.findOne({
           $or: [
             { email: req.body.email },
             { mobile_number: req.body.mobile_number },
@@ -85,7 +84,6 @@ module.exports = {
   },
 
 // user Signup
-
   dosignOut: (req, res) => {
     try {
       req.session.destroy();

@@ -8,9 +8,12 @@ router.get("/", adminController.homeView);
 router.get("/users", adminController.usersView);
 
 // admin Login
-
 router.get("/login", adminController.adminLogin);
 router.post("/login", adminController.doSignin);
+
+// user blocking/unblocking
+router.get("/blocking-user/:id", adminController.userBlocking);
+router.get("/unblocking-user/:id", adminController.userUnBlocking);
 
 // admin Logout
 router.get("/logout", adminController.dosignOut);

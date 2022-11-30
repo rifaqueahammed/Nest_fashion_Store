@@ -5,7 +5,7 @@ const User = require("../model/user");
 module.exports = {
 
 // admin Login
-  adminLogin: (req, res) => {
+ adminLogin: (req, res) => {
     if (req.session.loggedIn) {
       res.redirect("/admin");
     } else {
@@ -34,7 +34,6 @@ module.exports = {
   },
 
 // admin home
-
   homeView: (req, res) => {
     if (req.session.loggedIn) {
       res.render("admin/adminhome", { admin: true });
@@ -52,8 +51,30 @@ module.exports = {
     }
   },
 
-// admin logout
+// admin user block/unblock
+  userBlocking:(req,res) =>{
+    try{
+      const userId = req.params.id;
+      User.updateOne({_id:userId},{$set:{isBlocked:true}}).then(() =>{
+        res.redirect('/admin/users')
+      })
+    }catch{
+      console.log("error");
+    }
+   },
 
+   userUnBlocking:(req,res) =>{
+    try{
+      const userId = req.params.id;
+      User.updateOne({_id:userId},{$set:{isBlocked:false}}).then(() =>{
+        res.redirect('/admin/users')
+      })
+    }catch{
+      console.log("error");
+    }
+   },
+
+// admin logout
   dosignOut: (req, res) => {
     try {
       req.session.destroy();

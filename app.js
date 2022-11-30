@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 const express = require('express');
 const  {engine} = require('express-handlebars');
 const path = require('path');
@@ -28,21 +27,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret:"hello",
 saveUninitialized: true, resave: false}))
 
-
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store')
   next()
 })
 
-
-
 // routers
-
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 
 // view engine setup
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs', engine({
@@ -51,7 +45,6 @@ app.engine('hbs', engine({
   layoutsDir:`${__dirname}/views/layout`,
   partialsDir:`${__dirname}/views/partials`
 }));
-
 
 
 app.listen(port, () => {

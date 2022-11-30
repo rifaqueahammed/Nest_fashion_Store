@@ -14,10 +14,17 @@
           <td>{{this.name}}</td>
           <td>{{this.email}}</td>
           <td>{{this.mobile_number}}</td>
-          <td><a href="#"><button
-                type="button"
-                class="btn btn-danger"
-              >Block</button></a></td>
+          {{#if this.isBlocked}}
+            <td><a href="/admin/unblocking-user/{{this._id}}"><button
+                  type="button"
+                  class="btn btn-success"
+                >UnBlock</button></a></td>
+          {{else}}
+            <td><a href="/admin/blocking-user/{{this._id}}"><button
+                  type="button"
+                  class="btn btn-danger"
+                >Block</button></a></td>
+          {{/if}}
         </tr>
       {{/each}}
     </tbody>
