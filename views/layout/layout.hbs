@@ -20,7 +20,12 @@
    {{#if admin}}
    {{>adminnavbar}}
    {{/if}}
+   
    {{{body}}}
+   
+   {{#if user}}
+   {{>footer}}
+    {{/if}}
   
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
