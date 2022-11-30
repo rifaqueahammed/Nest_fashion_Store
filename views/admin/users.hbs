@@ -1,0 +1,25 @@
+<div class="container-fluid mt-5">
+  <table class="table table-success table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">email</th>
+        <th scope="col">Mobile No</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.mobile_number}}</td>
+          <td><a href="#"><button
+                type="button"
+                class="btn btn-danger"
+              >Block</button></a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
