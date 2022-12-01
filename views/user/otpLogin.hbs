@@ -1,0 +1,47 @@
+<section class="vh-100">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-center p-5">
+      <div class="row">
+        <div class="log text-black p-2 border border-success border-opacity-10">
+          <div class="px-5 d-flex">
+            <div class=""><i
+                class="bi bi-basket2-fill fa-3x me-3 pt-5 mt-xl-4"
+                style="color: #12c2d6;"
+              ></i></div>
+            <div><span class="h1 fw-bold mb-0" style="color:#709085;">Nest<h4
+                  style="color:#709085;"
+                >fashion</h4></span></div>
+          </div>
+          
+          <div
+            class="d-flex align-items-center h-custom-2 px-5 mt-5 pt-5 pt-xl-0 mt-xl-n5"
+          >
+            <form style="width: 23rem;" action="/user/otpValidation" method="POST">
+
+              <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Enter OTP 
+                </h3>
+              {{#if err_massage}}
+                <h4 class="text-danger">{{err_massage}}</h4>
+              {{/if}}
+              <div class="form-outline mb-4">
+                <input
+                  type="number"
+                  id="form2Example28"
+                  class="form-control form-control-lg"
+                  name="otp"
+                />
+              </div>
+              <div class="pt-1 mb-4">
+                <button
+                  class="btn btn-lg btn-block text-white w-100"
+                  style="background-color: #12c2d6;"
+                  type="submit"
+                >SUBMIT</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

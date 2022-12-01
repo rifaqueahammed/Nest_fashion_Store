@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
+const mailer = require("../middlewares/otpValidation");
+
+let body;
 
 module.exports = {
-  
   homeView: (req, res) => {
     if (req.session.loggedIn) {
       const usersession = req.session.user;
@@ -13,7 +15,7 @@ module.exports = {
     }
   },
 
-// user Login
+  // user Login
   userLogin: (req, res) => {
     if (req.session.loggedIn) {
       res.redirect("/user");
@@ -24,17 +26,21 @@ module.exports = {
 
   doSignin: async (req, res) => {
     try {
-      const body = { ...req.body };
-      const user = await User.findOne({ email: body.email });
+      const user = await User.findOne({ email: req.body.email });
       if (user) {
         const validPassword = await bcrypt.compare(
-          body.password,
+          req.body.password,
           user.password
         );
         if (validPassword) {
-          req.session.loggedIn = true;
-          req.session.user = user;
-          res.redirect("/user");
+          if (user.isBlocked) {
+            req.session.error = "User is Blocked";
+            res.redirect("login");
+          } else {
+            req.session.loggedIn = true;
+            req.session.user = user;
+            res.redirect("/user");
+          }
         } else {
           req.session.error = "Wrong password";
           res.redirect("login");
@@ -48,30 +54,34 @@ module.exports = {
     }
   },
 
-// user Signup
+  // user Signup
   userSignup: (req, res) => {
     res.render("user/signup");
   },
 
   dosignUp: (req, res) => {
     try {
-      const body = new User({ ...req.body });
+      body = new User({ ...req.body });
       if (req.body.password === req.body.confirm_password) {
         User.findOne({
-          $or: [
-            { email: req.body.email },
-            { mobile_number: req.body.mobile_number },
-          ],
+          $or: [{ email: body.email }, { mobile_number: body.mobile_number }],
         }).then(async (result) => {
           if (result) {
             res.render("user/signup", { err_massage: "User Already Exist" });
           } else {
-            // generate salt to hash password
-            const salt = await bcrypt.genSalt(10);
-            // now we set user password to hashed password
-            body.password = await bcrypt.hash(body.password, salt);
-            body.save().then(() => {
-              res.redirect("/user/login");
+            const mailDetails = {
+              from: process.env.nodmailer_email,
+              to: body.email,
+              subject: "Nest fashion OTP login",
+              html: `<p>Your OTP For Nest fashion login is ${mailer.OTP}</p>`,
+            };
+            mailer.mailTransporter.sendMail(mailDetails, (err) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("Email sent successfully");
+                res.redirect("/user/otpValidation");
+              }
             });
           }
         });
@@ -83,7 +93,31 @@ module.exports = {
     }
   },
 
-// user Signup
+  // user Signout
+  userOTPsignUp: (req, res) => {
+    res.render("user/otpLogin");
+  },
+
+  doOTPsignUp: async (req, res) => {
+    const { otp } = req.body;
+    if (otp === mailer.OTP) {
+      try {
+        // generate salt to hash password
+        const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+        body.password = await bcrypt.hash(body.password, salt);
+        body.save().then(() => {
+          res.redirect("/user/login");
+        });
+      } catch {
+        console.log("error");
+      }
+    } else {
+      console.log("error");
+    }
+  },
+
+  // user Signout
   dosignOut: (req, res) => {
     try {
       req.session.destroy();

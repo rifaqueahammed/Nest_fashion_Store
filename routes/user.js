@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user_controller");
 
+
 /* GET users listing. */
 router.get("/", userController.homeView);
 
@@ -14,6 +15,10 @@ router.post("/login", userController.doSignin);
 /* GET signup page. */
 router.get("/signup", userController.userSignup);
 router.post("/signup", userController.dosignUp);
+
+/* GET signup OTP validation. */
+router.get("/otpValidation",userController.userOTPsignUp);
+router.post("/otpValidation",userController.doOTPsignUp);
 
 /* signout page. */
 router.get("/logout", userController.dosignOut);

@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 // Import the mongoose module
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 
-dotenv.config();
+
 
 // Set up default mongoose connection
 

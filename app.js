@@ -4,10 +4,13 @@ const  {engine} = require('express-handlebars');
 const path = require('path');
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const dotenv = require("dotenv");
 const dbconnection=require('./config/connection')
+
 
 const app = express();
 const port=3000;
+dotenv.config();
 
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
