@@ -7,7 +7,7 @@ let body;
 
 module.exports = {
   homeView: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.user) {
       const usersession = req.session.user;
       res.render("user/userhome", { user: true, usersession });
     } else {
@@ -17,7 +17,7 @@ module.exports = {
 
   // user Login
   userLogin: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.user) {
       res.redirect("/user");
     } else {
       res.render("user/login", { err_massage: req.session.error });
@@ -37,7 +37,7 @@ module.exports = {
             req.session.error = "User is Blocked";
             res.redirect("login");
           } else {
-            req.session.loggedIn = true;
+            // req.session.loggedIn = true;
             req.session.user = user;
             res.redirect("/user");
           }

@@ -1,0 +1,128 @@
+<div class="d-flex justify-content-center mt-3"><h2 class="">Category</h2></div>
+
+<form action="/admin/add-category/" method="POST">
+  <div class="col-auto me-auto m-2 d-flex">
+    <button type="submit" class="btn btn-success">+Add Category</button>
+    <div class="col-auto ms-2">
+      <input type="text" class="form-control" name="category" />
+    </div>
+  </div>
+</form>
+
+<div class="container-fluid mt-5 mb-5">
+  <table class="table table-success table-striped" id="example">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each categories}}
+        {{#unless this.isBlocked}}
+          <tr>
+            <td>{{@index}}</td>
+            <td>{{this.category}}</td>
+            <td>
+              <div class="d-flex d-flex justify-content-end">
+                <div class="me-5">
+                  <!-- Button trigger modal -->
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Edit
+                  </button>
+
+                  <!-- Modal -->
+                  <form
+                    action="/admin/edit-category/{{this._id}}"
+                    method="POST"
+                  >
+                    <div
+                      class="modal fade"
+                      id="exampleModal"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit
+                              Category
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="category"
+                              value="{{this.category}}"
+                            />
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >Close</button>
+                            <button type="submit" class="btn btn-primary">Save
+                              changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                </div>
+
+                {{! <div class="me-5"><a href="/admin/edit-category/"><button
+                  type="button"
+                  class="btn btn-success"
+                >Edit</button></a></div> }}
+                <div class="me-5"><a
+                    href="/admin/blocking-category/{{this._id}}"
+                  ><button
+                      type="button"
+                      class="btn btn-danger"
+                    >Delete</button></a></div>
+              </div>
+            </td>
+          </tr>
+        {{/unless}}
+      {{/each}}
+
+    </tbody>
+  </table>
+</div>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"
+/>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"
+></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"
+></script>
+
+<script>
+  $(document).ready(function () { $('#example').DataTable(); });
+</script>

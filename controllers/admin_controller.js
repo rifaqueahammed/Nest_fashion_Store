@@ -2,11 +2,12 @@
 const Admin = require("../model/admin");
 const User = require("../model/user");
 
+
 module.exports = {
 
 // admin Login
  adminLogin: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.admin) {
       res.redirect("/admin");
     } else {
       res.render("admin/login");
@@ -20,7 +21,7 @@ module.exports = {
       if (admin) {
         if (body.password === admin.password) {
           console.log("valid admin");
-          req.session.loggedIn = true;
+          req.session.admin = admin;
           res.redirect("/admin");
         } else {
           console.log("password wrong");
@@ -35,7 +36,7 @@ module.exports = {
 
 // admin home
   homeView: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.admin) {
       res.render("admin/adminhome", { admin: true });
     } else {
       res.redirect("admin/login");
@@ -44,7 +45,7 @@ module.exports = {
 
   usersView: async (req, res) => {
     const users = await User.find().lean();
-    if (req.session.loggedIn) {
+    if (req.session.admin) {
       res.render("admin/users", { users, admin: true });
     } else {
       res.redirect("/admin/login");
