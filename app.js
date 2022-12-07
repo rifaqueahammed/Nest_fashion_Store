@@ -5,6 +5,7 @@ const path = require('path');
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const dotenv = require("dotenv");
+const fileUpload = require('express-fileupload');
 const dbconnection=require('./config/connection')
 
 
@@ -25,6 +26,11 @@ app.use(cookieParser());
 
 // static directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 // Session
 app.use(session({secret:"hello",
