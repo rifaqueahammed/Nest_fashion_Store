@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center mt-3"><h2 class="">Users</h2></div>
 <div class="container-fluid mt-3">
-  <table class="table table-success table-striped">
+  <table class="table table-success table-striped"  id="example">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -31,3 +31,25 @@
     </tbody>
   </table>
 </div>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"
+/>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"
+></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"
+></script>
+
+
+<script>
+  $(document).ready(function () { $('#example').DataTable(); });
+</script>

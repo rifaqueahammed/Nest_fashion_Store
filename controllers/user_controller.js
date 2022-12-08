@@ -1,17 +1,21 @@
 /* eslint-disable no-console */
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
+const Product = require("../model/product");
+const Category = require("../model/category");
 const mailer = require("../middlewares/otpValidation");
 
 let body;
 
 module.exports = {
-  homeView: (req, res) => {
-    if (req.session.user) {
+  homeView: async(req, res) => {
+    try{
+      const categories = await Category.find().lean();
+      const products = await Product.find().lean().populate("category");
       const usersession = req.session.user;
-      res.render("user/userhome", { user: true, usersession });
-    } else {
-      res.render("user/userhome", { user: true });
+      res.render("user/userhome", { user: true, usersession,products,categories });
+    }catch{
+      console.log('error')
     }
   },
 
@@ -37,7 +41,6 @@ module.exports = {
             req.session.error = "User is Blocked";
             res.redirect("login");
           } else {
-            // req.session.loggedIn = true;
             req.session.user = user;
             res.redirect("/user");
           }

@@ -5,30 +5,30 @@
           <div class="d-flex"><span class="h1 fw-bold" style="color: #709085;">Nest<h4 style="color:#709085;">fashion</h4></span></div></a>
         </div>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse d-lg-flex ms-1 justify-content-around" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto ml-lg-5 ">
             <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="h4 font-weight-bold">Home</span></a></span></a>
+              <a class="nav-link" href="/user/"><span class="h4 font-weight-bold">Home</span></a></span></a>
             </li>
+            {{#each categories}}
+             {{#unless this.isBlocked}}
             <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="h4 font-weight-bold">Men</span></a></span></a>
+              <a class="nav-link" href="/user/getCategoryPage/{{this._id}}"><span class="h4 font-weight-bold">{{this.category}}</span></a></span></a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="h4 font-weight-bold">Women</span></a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="h4 font-weight-bold">Kids</span></a>
-            </li>
+            {{/unless}}
+            {{/each}}
         </ul>
             <div class="ml-lg-5 ml-3">
               <form class="form-inline input-group-sm">
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-info my-2 my-sm" type="submit">Search</button>
-              </form>
+                <div class="d-flex">
+                  <div class="mt-2"><input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"></div>
+                  <div class=""> <button class="btn btn-outline-info my-2 my-sm ms-2 " type="submit">Search</button></div>
+                </div>
+                </form>
             </div>
            
             <div class="mr-lg-4 d-none d-lg-flex">
@@ -38,7 +38,7 @@
             </div>
            
           </div>
-          <div class="dropdown">
+    <div class="dropdown">
     <button class="btn btn-info dropdown-toggle me-3" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
     {{#if usersession}}
@@ -49,11 +49,12 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
        {{#if usersession}}
-      <a class="dropdown-item" href="user/logout">Logout</a>
+      <a class="dropdown-item" href="/user/logout">Logout</a>
       {{else}}
-     <a class="dropdown-item" href="user/login">Login</a>
+     <a class="dropdown-item" href="/user/login">Login</a>
     {{/if}}
       
+    </div>
     </div>
   </nav>
       

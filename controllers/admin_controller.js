@@ -36,20 +36,16 @@ module.exports = {
 
 // admin home
   homeView: (req, res) => {
-    if (req.session.admin) {
       res.render("admin/adminhome", { admin: true });
-    } else {
-      res.redirect("admin/login");
-    }
   },
 
   usersView: async (req, res) => {
     const users = await User.find().lean();
-    if (req.session.admin) {
+    // if (req.session.admin) {
       res.render("admin/users", { users, admin: true });
-    } else {
-      res.redirect("/admin/login");
-    }
+    // } else {
+      // res.redirect("/admin/login");
+    // }
   },
 
 // admin user block/unblock
