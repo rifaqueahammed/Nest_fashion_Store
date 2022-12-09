@@ -2,11 +2,9 @@
 const Admin = require("../model/admin");
 const User = require("../model/user");
 
-
 module.exports = {
-
-// admin Login
- adminLogin: (req, res) => {
+  // admin Login
+  adminLogin: (req, res) => {
     if (req.session.admin) {
       res.redirect("/admin");
     } else {
@@ -34,44 +32,48 @@ module.exports = {
     }
   },
 
-// admin home
+  // admin home
   homeView: (req, res) => {
-      res.render("admin/adminhome", { admin: true });
+    res.render("admin/adminhome", { admin: true });
   },
 
   usersView: async (req, res) => {
     const users = await User.find().lean();
     // if (req.session.admin) {
-      res.render("admin/users", { users, admin: true });
+    res.render("admin/users", { users, admin: true });
     // } else {
-      // res.redirect("/admin/login");
+    // res.redirect("/admin/login");
     // }
   },
 
-// admin user block/unblock
-  userBlocking:(req,res) =>{
-    try{
+  // admin user block/unblock
+  userBlocking: (req, res) => {
+    try {
       const userId = req.params.id;
-      User.updateOne({_id:userId},{$set:{isBlocked:true}}).then(() =>{
-        res.redirect('/admin/users')
-      })
-    }catch{
+      User.updateOne({ _id: userId }, { $set: { isBlocked: true } }).then(
+        () => {
+          res.redirect("/admin/users");
+        }
+      );
+    } catch {
       console.log("error");
     }
-   },
+  },
 
-   userUnBlocking:(req,res) =>{
-    try{
+  userUnBlocking: (req, res) => {
+    try {
       const userId = req.params.id;
-      User.updateOne({_id:userId},{$set:{isBlocked:false}}).then(() =>{
-        res.redirect('/admin/users')
-      })
-    }catch{
+      User.updateOne({ _id: userId }, { $set: { isBlocked: false } }).then(
+        () => {
+          res.redirect("/admin/users");
+        }
+      );
+    } catch {
       console.log("error");
     }
-   },
+  },
 
-// admin logout
+  // admin logout
   dosignOut: (req, res) => {
     try {
       req.session.destroy();

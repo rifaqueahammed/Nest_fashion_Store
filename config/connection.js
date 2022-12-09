@@ -2,8 +2,6 @@
 // Import the mongoose module
 const mongoose = require("mongoose");
 
-
-
 // Set up default mongoose connection
 
 module.exports = () => {

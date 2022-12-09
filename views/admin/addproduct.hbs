@@ -53,7 +53,9 @@
                       >
                         {{#each categories}}
                           {{#unless this.isBlocked}}
-                            <option value="{{this._id}}">{{this.category}}</option>
+                            <option
+                              value="{{this._id}}"
+                            >{{this.category}}</option>
                           {{/unless}}
                         {{/each}}
                       </select>

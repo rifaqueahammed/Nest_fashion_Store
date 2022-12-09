@@ -1,26 +1,31 @@
-<div class="container m-5">
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-   {{#each products}}
-         {{#unless this.isBlocked}}
-  <div class="col w-auto ">
-    <div class="card">
-      <img src="/images/{{this._id}}.jpg" class="card-img-top img-thumbnail"
-        alt="" style="height: 250px; width: 250px;;"/>
-      <div class="card-body mx-auto">
-        <h4 class="card-title">{{this.product_name}}</h4>
-       <div class="text-center"><h5 class="card-title  fw-bold" style="color: blue;">Rs.{{this.price}}</h5></div> 
-        <p class="card-text">
-          {{this.description}}
-        </p>
-      </div>
-      <div class="mx-auto m-2">
-        <a href="#!" class="btn btn-success btn-lg">Wishlist</a>
-      </div>
-    </div>
+<div class="container mt-5 mb-5">
+  <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-5">
+    {{#each products}}
+      {{#unless this.isBlocked}}
+        <div class="col w-auto m-4">
+          <div class="card">
+            <img
+              src="/images/{{this._id}}.jpg"
+              class="card-img-top img-thumbnail"
+              alt=""
+              style="height: 250px; width: 250px;"
+            />
+            <div class="card-body mx-auto">
+              <h4 class="card-title">{{this.product_name}}</h4>
+              <div class="text-center"><h5
+                  class="card-title fw-bold"
+                  style="color: blue;"
+                >Rs.{{this.price}}</h5></div>
+              <p class="card-text">
+                {{this.description}}
+              </p>
+            </div>
+            <div class="mx-auto m-2">
+              <a href="#!" class="btn btn-success btn-lg">Wishlist</a>
+            </div>
+          </div>
+        </div>
+      {{/unless}}
+    {{/each}}
   </div>
-  {{/unless}}
-{{/each}}
 </div>
-</div>
-
-

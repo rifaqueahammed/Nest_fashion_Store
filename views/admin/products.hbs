@@ -1,9 +1,9 @@
 <div class="d-flex justify-content-center mt-3"><h2 class="">Products</h2></div>
 
 <div class="m-3 mb-0"><a href="/admin/add-product"><button
-                  type="button"
-                  class="btn btn-success"
-                >+Add Products</button></a></div>
+      type="button"
+      class="btn btn-success"
+    >+Add Products</button></a></div>
 <div class="container-fluid mt-3 mb-5">
   <table class="table table-success table-striped" id="example">
     <thead>
@@ -13,41 +13,49 @@
         <th scope="col">Category</th>
         <th scope="col">Prise</th>
         <th scope="col">Stock</th>
-         <th scope="col">Image</th>
+        <th scope="col">Image</th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
-        {{#each products}}
-         {{#unless this.isBlocked}}
+      {{#each products}}
+        {{#unless this.isBlocked}}
           <tr>
             <td>{{@index}}</td>
             <td>{{this.product_name}}</td>
             <td>{{this.category.category}}</td>
             <td>Rs.{{this.price}}</td>
             <td>{{this.stock}}</td>
-            <td><img src="/images/{{this._id}}.jpg" class="img-thumbnail" alt="" style="width:4rem"></td>
+            <td><img
+                src="/images/{{this._id}}.jpg"
+                class="img-thumbnail"
+                alt=""
+                style="width:4rem"
+              /></td>
             <td>
-                <div class="d-flex justify-content-end">
-                    <div class="me-3"><a href="/admin/edit-product/{{this._id}}"><button
-                  type="button"
-                  class="btn btn-success"
-                >Edit</button></a></div>
-                <div class="me-3"><a href="/admin/block-product/{{this._id}}"><button
-                  type="button"
-                  class="btn btn-danger"
-                >Delete</button></a></div>
-                </div>
-                
+              <div class="d-flex justify-content-end">
+                <div class="me-3"><a
+                    href="/admin/edit-product/{{this._id}}"
+                  ><button
+                      type="button"
+                      class="btn btn-success"
+                    >Edit</button></a></div>
+                <div class="me-3"><a
+                    href="/admin/block-product/{{this._id}}"
+                  ><button
+                      type="button"
+                      class="btn btn-danger"
+                    >Delete</button></a></div>
+              </div>
+
             </td>
-            
+
           </tr>
-       {{/unless}}
+        {{/unless}}
       {{/each}}
     </tbody>
   </table>
 </div>
-
 
 <link
   rel="stylesheet"
@@ -65,7 +73,6 @@
 <script
   src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"
 ></script>
-
 
 <script>
   $(document).ready(function () { $('#example').DataTable(); });

@@ -8,14 +8,19 @@ const mailer = require("../middlewares/otpValidation");
 let body;
 
 module.exports = {
-  homeView: async(req, res) => {
-    try{
+  homeView: async (req, res) => {
+    try {
       const categories = await Category.find().lean();
       const products = await Product.find().lean().populate("category");
       const usersession = req.session.user;
-      res.render("user/userhome", { user: true, usersession,products,categories });
-    }catch{
-      console.log('error')
+      res.render("user/userhome", {
+        user: true,
+        usersession,
+        products,
+        categories,
+      });
+    } catch {
+      console.log("error");
     }
   },
 
