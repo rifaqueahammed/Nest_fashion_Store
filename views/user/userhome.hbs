@@ -2,7 +2,7 @@
   <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-5">
     {{#each products}}
       {{#unless this.isBlocked}}
-        <div class="col w-auto m-4">
+        <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
           <div class="card">
             <img
               src="/images/{{this._id}}.jpg"

@@ -1,0 +1,125 @@
+<div class="container mt-5">
+  <div class="col py-3">
+    <section>
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div
+            class="row d-flex justify-content-center align-items-center h-100"
+          >
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px">
+                <div class="card-body p-5">
+                  <h5 class="text-center mb-5">Edit Product</h5>
+                  <form
+                    action="/admin/edit-product/{{product._id}}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form3Example1cg">Product
+                        Name</label>
+                      <input
+                        type="text"
+                        id="product"
+                        name="product"
+                        class="form-control form-control-lg"
+                        value="{{product.product_name}}"
+                      />
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label
+                        class="form-label"
+                        for="form3Example4cg"
+                      >Category</label>
+                      <select
+                        class="form-select"
+                        id="category"
+                        name="category"
+                        aria-label="Default select example"
+                      >
+                        <option
+                          value="{{product.category._id}}"
+                        >{{product.category.category}}</option>
+                      </select>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label
+                        class="form-label"
+                        for="form3Example3cg"
+                      >Price</label>
+                      <input
+                        type="num"
+                        id="price"
+                        name="price"
+                        class="form-control form-control-lg"
+                        value="{{product.price}}"
+                      />
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label
+                        class="form-label"
+                        for="form3Example4cdg"
+                      >Description</label>
+                      <input
+                        type="text"
+                        id="description"
+                        name="description"
+                        class="form-control form-control-lg"
+                        value="{{product.description}}"
+                      />
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label
+                        class="form-label"
+                        for="form3Example4cdg"
+                      >Stock</label>
+                      <input
+                        type="num"
+                        id="stock"
+                        name="stock"
+                        class="form-control form-control-lg"
+                        value="{{product.stock}}"
+                      />
+                    </div>
+                    <img
+                      src="/images/{{product._id}}.jpg"
+                      id="imgView"
+                      class="img-thumbnail"
+                      alt="..."
+                      style="height: 100px; width: 100px;"
+                    />
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="customFile">Choose image</label>
+                      <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control"
+                        onchange="viewImage(event)"
+                      />
+                    </div>
+                    <div class="d-flex justify-content-center">
+                      <button
+                        type="submit"
+                        value="submit"
+                        class="btn text-white bg-success"
+                      >
+                        Save Changes
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  function viewImage(event) {
+  document.getElementById("imgView").src=URL.createObjectURL(event.target.files[0])
+  }
+</script>

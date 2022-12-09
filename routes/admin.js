@@ -40,7 +40,8 @@ router.get(
   productController.addProductpage
 );
 router.post("/add-product", productController.addProduct);
-// router.get("/edit-product/:id",productController.editProductpage);
+router.get("/edit-product/:id", productController.editProductpage);
+router.post("/edit-product/:id", productController.editProduct);
 router.get("/block-product/:id", productController.blockProduct);
 
 // admin Logout

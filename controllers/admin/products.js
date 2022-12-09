@@ -40,16 +40,43 @@ module.exports = {
     }
   },
 
-  //  editProductpage:async(req, res) => {
-  //   const productId= req.params.id
-  //   console.log(productId)
-  //   // const product = await Product.findOne({_id:productId}).lean()
-  //   const categories = await Category.find().lean();
-  //   // console.log(product)
-  //   console.log(categories)
-  //   // res.render("admin/editproduct", { admin: true,product,categories});
-  //   res.render("admin/editproduct", { admin: true,categories});
-  //   },
+  editProductpage: async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const product = await Product.findOne({ _id: productId })
+        .lean()
+        .populate("category");
+      res.render("admin/editproduct", { admin: true, product });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  editProduct: (req, res) => {
+    try {
+      const productId = req.params.id;
+      Product.updateOne(
+        { _id: productId },
+        {
+          $set: {
+            product_name: req.body.product,
+            price: req.body.price,
+            description: req.body.description,
+            stock: req.body.stock,
+          },
+        }
+      ).then(() => {
+        if (req.files) {
+          const { image } = req.files;
+          const imageId = productId;
+          image.mv(`./public/images/${imageId}.jpg`);
+        }
+        res.redirect("/admin/products");
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   blockProduct: (req, res) => {
     try {
