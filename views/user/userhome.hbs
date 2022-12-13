@@ -3,6 +3,7 @@
     {{#each products}}
       {{#unless this.isBlocked}}
         <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
+          <a href="/user/getProduct/{{this._id}}" class="text-decoration-none">
           <div class="card">
             <img
               src="/images/{{this._id}}.jpg"
@@ -11,18 +12,18 @@
               style="height: 250px; width: 250px;"
             />
             <div class="card-body mx-auto">
-              <h4 class="card-title">{{this.product_name}}</h4>
+              <h4 class="card-title text" style="color: #000000;">{{this.product_name}}</h4>
               <div class="text-center"><h5
                   class="card-title fw-bold"
-                  style="color: blue;"
+                  style="color: #000000;"
                 >Rs.{{this.price}}</h5></div>
-              <p class="card-text">
+              <p class="card-text" style="color: #575555;">
                 {{this.description}}
               </p>
             </div>
-            <div class="mx-auto m-2">
+          </div></a>
+          <div class="mx-auto m-2 text-center">
               <a href="#!" class="btn btn-success btn-lg">Wishlist</a>
-            </div>
           </div>
         </div>
       {{/unless}}

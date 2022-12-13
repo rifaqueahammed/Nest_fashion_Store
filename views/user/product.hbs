@@ -1,0 +1,31 @@
+
+<div class="container shadow p-3 mt-5 mb-5 bg-body rounded">
+<div class="row justify-content-center ">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body col-md-4 row row-cols-2 justify-content-center w-100 g-2 ">
+          <div><img src="/images/{{product._id}}.jpg" class="img-fluid rounded-start" alt="..."></div>
+          <div><img src="/images/{{product._id}}.jpg" class="img-fluid rounded-start" alt="..."></div>
+          <div><img src="/images/{{product._id}}.jpg" class="img-fluid rounded-start" alt="..."></div>
+          <div><img src="/images/{{product._id}}.jpg" class="img-fluid rounded-start" alt="..."></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">{{product.product_name}}</h2>
+        <h5 class="card-text text-secondary mt-2">{{product.description}}</h5>
+        <h4 class="card-text mt-3 mb-3"><span><i class="bi bi-currency-rupee"></i></span>{{product.price}}</h4>
+        <a href="/user/addToCart/{{product._id}}/{{usersession._id}}" class="btn btn-info text-white fs-5 fw-bold"><span><i class="bi bi-cart-fill fa me-2"></i>ADD TO CART</a>
+        <a href="#" class="btn btn-secondary fs-5 ms-2 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i></span>WISHLIST</a>
+        <div class="d-flex mt-5"><h5 class="card-text mt-3">DELIVERY OPTION</h5><span class=" ms-2"><i class="bi bi-truck fa-2x"></i></span></div>
+        <h6 class="text-secondary">Get it By</h6> 
+        <h6 class="text-secondary">Cash On Delivery</h6> 
+        <h6 class="text-secondary">Easy Returns</h6> 
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

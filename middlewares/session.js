@@ -10,7 +10,7 @@ module.exports = {
     if (req.session.user) {
       next();
     } else {
-      res.render("user/userhome", { user: true });
+      res.redirect("/user/guesthome");
     }
   },
 };
