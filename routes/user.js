@@ -30,8 +30,11 @@ router.get("/getCategoryPage/:id",verifyLogin.verifyLoginUser,categoryController
 router.get("/getProduct/:id",verifyLogin.verifyLoginUser,productController.getProductDetails);
 
 /* Cart management */
-router.get("/addToCart/:id/:userid",verifyLogin.verifyLoginUser,cartController.addCart);
+router.get("/addToCart/:id",verifyLogin.verifyLoginUser,cartController.addCart);
 router.get("/getCart/:userid",verifyLogin.verifyLoginUser,cartController.getCart);
+router.post("/changeProductQuantity",verifyLogin.verifyLoginUser,cartController.changeProductQuantity,cartController.cartTotalAmounts);
+router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.deleteProduct);
+
 
 /* signout page. */
 router.get("/logout", userController.dosignOut);

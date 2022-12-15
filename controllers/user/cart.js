@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const mongoose = require("mongoose");
 const Cart = require("../../model/cart");
@@ -7,7 +8,7 @@ module.exports = {
   addCart: async (req, res) => {
     try {
       const productID = req.params.id;
-      const userID = req.params.userid;
+      const userID = req.session.user._id;
       const userCart = await Cart.findOne({ userid: userID });
       if (userCart) {
         Cart.findOne({
@@ -29,8 +30,7 @@ module.exports = {
               {
                 $push: { products: { productid: productID, quantity: 1 } },
               }
-            ).then((resu) => {
-              console.log(resu);
+            ).then(() => {
               res.redirect(`/user/getProduct/${productID}`);
             });
           }
@@ -59,8 +59,114 @@ module.exports = {
       const usersession = req.session.user;
       const categories = await Category.find().lean();
       const userID = mongoose.Types.ObjectId(req.params.userid);
-      console.log(userID);
       Cart.aggregate([
+        { $match: { userid: userID } },
+        { $unwind: "$products" },
+        {
+          $project: {
+            productItem: "$products.productid",
+            productQuantity: "$products.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "productItem",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $project: {
+            productItem: 1,
+            productQuantity: 1,
+            productDetails: { $arrayElemAt: ["$productDetails", 0] },
+          },
+        },
+        {
+          $addFields: {
+            productPrice: {
+              $sum: {
+                $multiply: ["$productQuantity", "$productDetails.price"],
+              },
+            },
+          },
+        },
+
+        {
+          $facet: {
+            data: [{ $match: {} }],
+            totalAmount: [
+              {
+                $group: {
+                  _id: "",
+                  Amount: { $sum: "$productPrice" },
+                },
+              },
+            ],
+            numberOfItems: [{ $count: "totalItems" }],
+          },
+        },
+
+        {
+          $unwind: "$numberOfItems",
+        },
+        {
+          $unwind: "$totalAmount",
+        },
+      ]).then((result) => {
+        const cartProducts = result[0];
+        res.render("user/cart", {
+          user: true,
+          categories,
+          usersession,
+          cartProducts,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  changeProductQuantity: (req, res, next) => {
+    try {
+      const data = req.body;
+      const { count } = data;
+      const productID = data.productId;
+      const userID = req.session.user._id;
+      // eslint-disable-next-line eqeqeq
+      if (data.count == -1 && data.quantity == 1) {
+        Cart.updateOne(
+          {
+            $and: [{ userid: userID }, { "products.productid": productID }],
+          },
+          {
+            $pull: { products: { productid: productID } },
+          }
+        ).then(() => {
+          res.json({productRemoved:true})
+        });
+      } else {
+        Cart.updateOne(
+          {
+            $and: [{ userid: userID }, { "products.productid": productID }],
+          },
+          { $inc: { "products.$.quantity": count } }
+        ).then(() => {
+          next();
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  cartTotalAmounts: async (req, res) => {
+    try {
+      const data = req.body;
+      const productID = mongoose.Types.ObjectId(data.productId);
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      const productData = await Cart.aggregate([
         { $match: { userid: userID } },
         { $unwind: "$products" },
         {
@@ -95,23 +201,47 @@ module.exports = {
         },
         {
           $facet: {
-            data: [{ $match: {} }],
+            totalAmount: [
+              {
+                $group: {
+                  _id: "",
+                  Amount: { $sum: "$productPrice" },
+                },
+              },
+            ],
             numberOfItems: [{ $count: "totalItems" }],
+            data: [{ $match: { productItem: productID } }],
           },
         },
-
         {
           $unwind: "$numberOfItems",
         },
-      ]).then((result) => {
-        console.log(result[0]);
-        const cartProducts = result[0];
-        res.render("user/cart", {
-          user: true,
-          categories,
-          usersession,
-          cartProducts,
-        });
+        {
+          $unwind: "$totalAmount",
+        },
+        {
+          $unwind: "$data",
+        },
+      ]);
+      res.json({ status: true, productData });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  deleteProduct: (req, res) => {
+    try {
+      const productID = req.params.id;
+      const userID = req.session.user._id;
+      Cart.updateOne(
+        {
+          $and: [{ userid: userID }, { "products.productid": productID }],
+        },
+        {
+          $pull: { products: { productid: productID } },
+        }
+      ).then(() => {
+        res.json({productRemoved:true});
       });
     } catch (error) {
       console.log(error);
