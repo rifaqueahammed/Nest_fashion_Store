@@ -1,6 +1,10 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
+const { response } = require("express");
+
+// chekout
 function addtoCart(productId) {
   $.ajax({
     url: `/user/addToCart/${productId}`,
@@ -22,7 +26,7 @@ function changeQuantity(productId, count) {
     },
     method: "post",
     success: (response) => {
-      if (response.status) {
+      if (response.productQuantityChanged) {
         document.getElementById(productId).innerHTML = quantity + count;
         document.getElementById(
           "totalAmount1"
@@ -41,6 +45,12 @@ function changeQuantity(productId, count) {
           confirmButtonText: "OK",
         });
         document.getElementById(`${productId}productbody`).remove();
+        document.getElementById(
+          "totalAmount1"
+        ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
+        document.getElementById(
+          "totalAmount2"
+        ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
       }
     },
   });
@@ -58,3 +68,6 @@ function deleteProduct(productId) {
     },
   });
 }
+
+// order-placing
+

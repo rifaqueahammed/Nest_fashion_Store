@@ -143,8 +143,9 @@ module.exports = {
           {
             $pull: { products: { productid: productID } },
           }
-        ).then(() => {
-          res.json({productRemoved:true})
+        ).then(async () => {
+          req.productRemoved = true;
+          next();
         });
       } else {
         Cart.updateOne(
@@ -153,6 +154,7 @@ module.exports = {
           },
           { $inc: { "products.$.quantity": count } }
         ).then(() => {
+          req.productQuantityChanged = true;
           next();
         });
       }
@@ -163,6 +165,8 @@ module.exports = {
 
   cartTotalAmounts: async (req, res) => {
     try {
+      const { productRemoved } = req;
+      const { productQuantityChanged } = req;
       const data = req.body;
       const productID = mongoose.Types.ObjectId(data.productId);
       const userID = mongoose.Types.ObjectId(req.session.user._id);
@@ -223,7 +227,7 @@ module.exports = {
           $unwind: "$data",
         },
       ]);
-      res.json({ status: true, productData });
+      res.json({ productQuantityChanged, productData, productRemoved });
     } catch (error) {
       console.log(error);
     }
@@ -241,7 +245,7 @@ module.exports = {
           $pull: { products: { productid: productID } },
         }
       ).then(() => {
-        res.json({productRemoved:true});
+        res.json({ productRemoved: true });
       });
     } catch (error) {
       console.log(error);

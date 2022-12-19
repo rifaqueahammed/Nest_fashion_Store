@@ -7,6 +7,8 @@ const userController = require("../controllers/user_controller");
 const categoryController = require("../controllers/user/category");
 const productController = require("../controllers/user/product")
 const cartController = require("../controllers/user/cart")
+const orderController = require("../controllers/user/order")
+const profileController = require("../controllers/user/profile")
 
 /* GET users listing. */
 router.get("/", verifyLogin.verifyLoginUser, userController.homeView);
@@ -29,11 +31,26 @@ router.get("/getCategoryPage/:id",verifyLogin.verifyLoginUser,categoryController
 /* Product management */
 router.get("/getProduct/:id",verifyLogin.verifyLoginUser,productController.getProductDetails);
 
+/* Profile management */
+router.get("/profile",verifyLogin.verifyLoginUser,profileController.getProfile);
+router.post("/addPermanentAddress",verifyLogin.verifyLoginUser,profileController.addPermanentAddress);
+router.get("/profileedit",verifyLogin.verifyLoginUser,profileController.editProfile);
+
 /* Cart management */
 router.get("/addToCart/:id",verifyLogin.verifyLoginUser,cartController.addCart);
 router.get("/getCart/:userid",verifyLogin.verifyLoginUser,cartController.getCart);
 router.post("/changeProductQuantity",verifyLogin.verifyLoginUser,cartController.changeProductQuantity,cartController.cartTotalAmounts);
 router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.deleteProduct);
+
+/* Order management */
+router.get("/checkOut",verifyLogin.verifyLoginUser,orderController.checkOut);
+router.get("/permenanAddress",verifyLogin.verifyLoginUser,orderController.permenantAddress);
+router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder);
+
+
+
+
+
 
 
 /* signout page. */

@@ -25,6 +25,35 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  permanentAddress: {
+    gender: {
+      type: String,
+    },
+    housename: {
+      type: String,
+      default: "",
+    },
+    area: {
+      type: String,
+    },
+    landmark: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    postoffice: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+      default: "",
+    },
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
