@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <hr class="mb-4">
-                <button class="btn btn-success btn-lg btn-block" type="submit">Continue to checkout</button>
+                <button class="btn btn-success btn-lg btn-block" type="submit">PLACE ORDER</button>
             </form>
         </div>
     </div>
@@ -124,7 +124,7 @@ $("#placeorder-form").submit((e) => {
     data: $("#placeorder-form").serialize(),
     success: (response) => { 
       if(response.status){
-         
+         location.href = '/user/ordersuccess'
       }
      
     }

@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
-const { response } = require("express");
 
 // chekout
 function addtoCart(productId) {
@@ -69,5 +68,45 @@ function deleteProduct(productId) {
   });
 }
 
-// order-placing
+// wishlist
+
+function wishlist(productId) {
+  $.ajax({
+    url: `/user/wishlist/${productId}`,
+    method: "get",
+    success: (response) => {
+      if(response.alreadyWishlisted){
+        Swal.fire("Already Wishlisted");
+      }else{
+        Swal.fire("Wishlisted");
+      }
+    },
+  });
+}
+
+function movetoCart(productId) {
+  $.ajax({
+    url: `/user/movetoCart/${productId}`,
+    method: "get",
+    success: (response) => {
+      Swal.fire("Move to Cart");
+      document.getElementById(`${productId}wishlistproductbody`).remove();
+    },
+  });
+}
+
+
+function deletewishlistProduct(productId) {
+  $.ajax({
+    url: `/user/deletewishlistProduct/${productId}`,
+    method: "get",
+    success: (response) => {
+      if(response.productRemoved){
+        Swal.fire("Product Removed from Wishlist");
+        document.getElementById(`${productId}wishlistproductbody`).remove();
+      }
+    },
+  });
+}
+
 

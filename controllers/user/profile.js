@@ -10,7 +10,6 @@ module.exports = {
     const categories = await Category.find().lean();
     const useraddress = await User.find({ _id: usersession._id }).lean();
     const address = useraddress[0];
-    console.log(address);
     try {
       res.render("user/account", {
         user: true,
@@ -26,7 +25,6 @@ module.exports = {
   addPermanentAddress: (req, res) => {
     try {
       const address = req.body;
-      console.log(address);
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       User.updateOne(
         { _id: userID },
@@ -34,8 +32,7 @@ module.exports = {
           $set: { permanentAddress: address },
         },
         { upsert: true }
-      ).then((result) => {
-        console.log(result);
+      ).then(() => {
         res.redirect("/user/profile");
       });
     } catch (error) {

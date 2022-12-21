@@ -7,6 +7,7 @@ const userController = require("../controllers/user_controller");
 const categoryController = require("../controllers/user/category");
 const productController = require("../controllers/user/product")
 const cartController = require("../controllers/user/cart")
+const wishlistController = require("../controllers/user/wishlist")
 const orderController = require("../controllers/user/order")
 const profileController = require("../controllers/user/profile")
 
@@ -36,9 +37,15 @@ router.get("/profile",verifyLogin.verifyLoginUser,profileController.getProfile);
 router.post("/addPermanentAddress",verifyLogin.verifyLoginUser,profileController.addPermanentAddress);
 router.get("/profileedit",verifyLogin.verifyLoginUser,profileController.editProfile);
 
+/* Wishlist management */
+router.get("/wishlist/:id",verifyLogin.verifyLoginUser,wishlistController.addtoWishlist);
+router.get("/viewwishlist",verifyLogin.verifyLoginUser,wishlistController.viewWishlist);
+router.get("/movetoCart/:id",verifyLogin.verifyLoginUser,wishlistController.movetoCart,wishlistController.deletewishlistProduct);
+router.get("/deletewishlistProduct/:id",verifyLogin.verifyLoginUser,wishlistController.deletewishlistProduct);
+
 /* Cart management */
 router.get("/addToCart/:id",verifyLogin.verifyLoginUser,cartController.addCart);
-router.get("/getCart/:userid",verifyLogin.verifyLoginUser,cartController.getCart);
+router.get("/getCart/:userid",verifyLogin.verifyLoginUser,cartController.viewCart);
 router.post("/changeProductQuantity",verifyLogin.verifyLoginUser,cartController.changeProductQuantity,cartController.cartTotalAmounts);
 router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.deleteProduct);
 
@@ -46,12 +53,8 @@ router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.delet
 router.get("/checkOut",verifyLogin.verifyLoginUser,orderController.checkOut);
 router.get("/permenanAddress",verifyLogin.verifyLoginUser,orderController.permenantAddress);
 router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder);
-
-
-
-
-
-
+router.get("/ordersuccess",verifyLogin.verifyLoginUser,orderController.orderConfirmation)
+router.get("/vieworders",verifyLogin.verifyLoginUser,orderController.viewOrders)
 
 /* signout page. */
 router.get("/logout", userController.dosignOut);

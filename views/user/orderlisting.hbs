@@ -1,0 +1,36 @@
+<div class="table-responsive p-5">
+  <table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Order Id</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Delivery Date</th>
+        <th scope="col">Total Amount</th>
+        <th scope="col">Payment</th>
+        <th scope="col">Order Status</th>
+        <th scope="col">View Products</th>
+        <th scope="col">Cancel Order</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+      <tr>
+        <td></td>
+        <td>{{this._id}} </td>
+        <td>{{this.orderDate}}</td>
+        <td>Delivery Date</td>
+        <td>{{this.totalAmount}}</td>
+        <td>{{this.paymentStatus}}</td>
+        <td>{{this.orderStatus}}</td>
+        <td>
+          <a href="/view-order-products/<%=order._id%>"><button type="button" class="btn btn-info">View Products</button></a>
+        </td>
+        <td>
+          <a href="/orderCancel"><button type="button" class="btn btn-danger">Cancel</button></a>
+        </td>
+      </tr>
+        {{/each}}
+    </tbody>
+  </table>
+</div>

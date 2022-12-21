@@ -20,8 +20,7 @@
         {{!-- <a href="/user/addToCart/{{product._id}}" class="btn btn-info text-white fs-5 fw-bold"><span><i class="bi bi-cart-fill fa me-2"></i>ADD TO CART</a> --}}
 
         <button type="button" onclick="addtoCart('{{product._id}}')" class="btn btn-info text-white fs-5 fw-bold"><span><i class="bi bi-cart-fill fa me-2"></i>ADD TO CART</button>
-        
-        <a href="#" class="btn btn-secondary fs-5 ms-2 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i></span>WISHLIST</a>
+        <button type="button" onclick="wishlist('{{product._id}}')" class="btn btn-danger text-white fs-5 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i>Wishlist</button>
         <div class="d-flex mt-5"><h5 class="card-text mt-3">DELIVERY OPTION</h5><span class=" ms-2"><i class="bi bi-truck fa-2x"></i></span></div>
         <h6 class="text-secondary">Get it By</h6> 
         <h6 class="text-secondary">Cash On Delivery</h6> 

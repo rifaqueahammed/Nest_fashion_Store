@@ -88,12 +88,25 @@ module.exports = {
     }
   },
 
+  permenantAddress: async (req, res) => {
+    try {
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      const address = await User.findOne({ _id: userID });
+      if (address.permanentAddress.housename.length) {
+        res.json({ status: true, address });
+      } else {
+        res.json({ addressNotexist: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   placeOrder: async (req, res) => {
     try {
       const addressDetails = req.body;
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       const cartproducts = await Cart.findOne({ userid: userID }).lean();
-      console.log(cartproducts);
       Cart.aggregate([
         { $match: { userid: userID } },
         { $unwind: "$products" },
@@ -173,7 +186,6 @@ module.exports = {
           orderDate: objectDate,
         });
         newOrder.save().then(async () => {
-          console.log(userID);
           Cart.deleteOne({ userid: userID }).then(() => {
             res.json({ status: true });
           });
@@ -184,18 +196,28 @@ module.exports = {
     }
   },
 
-  permenantAddress: async (req, res) => {
+  orderConfirmation: (req, res) => {
     try {
-      const userID = mongoose.Types.ObjectId(req.session.user._id);
-      const address = await User.findOne({ _id: userID });
-      console.log(address.permanentAddress.housename);
-      if (address.permanentAddress.housename.length) {
-        res.json({ status: true, address });
-      } else {
-        res.json({ addressNotexist: true });
-      }
+      const usersession = req.session.user;
+      res.render('user/orderconfirmation',{usersession})
     } catch (error) {
       console.log(error);
     }
   },
+
+  viewOrders: async(req, res) => {
+    try {
+      const usersession = req.session.user;
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      const categories = await Category.find().lean();
+      const orders = await Order.find({userId:userID}).lean();
+      res.render('user/orderlisting',{user:true,usersession,categories,orders})
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+
+
+  
 };

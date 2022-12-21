@@ -1,12 +1,11 @@
 <div class="container mt-5 mb-5">
   <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-5">
-    {{#each products}}
-      {{#unless this.isBlocked}}
-        <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
-          <a href="/user/getProduct/{{this._id}}" class="text-decoration-none">
+    {{#each wishlist.products}}
+        <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded" id="{{this.productid}}wishlistproductbody">
+          <a href="/user/getProduct/{{this.productid}}" class="text-decoration-none">
           <div class="card">
             <img
-              src="/images/{{this._id}}.jpg"
+              src="/images/{{this.productid}}.jpg"
               class="card-img-top img-thumbnail"
               alt=""
               style="height: 250px; width: 250px;"
@@ -23,10 +22,17 @@
             </div>
           </div></a>
           <div class="mx-auto m-2 text-center">
-              <button type="button" onclick="wishlist('{{this._id}}')" class="btn btn-danger text-white fs-5 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i>Wishlist</button>
+              <button type="button" onclick="movetoCart('{{this.productid}}')" class="btn btn-primary text-white fs-5 fw-bold"><span><i class="bi bi-cart-fill fa me-2"></i>Move to Cart</button>
+               <button
+                      type="button"
+                      class="btn btn-danger btn-sm ms-2"
+                      onclick="deletewishlistProduct('{{this.productid}}')"
+                      data-mdb-toggle="tooltip"
+                      title="Remove item"
+                    > <i class="fas fa-trash"></i>
+               </button>
           </div>
         </div>
-      {{/unless}}
     {{/each}}
   </div>
 </div>

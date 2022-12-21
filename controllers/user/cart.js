@@ -54,7 +54,7 @@ module.exports = {
     }
   },
 
-  getCart: async (req, res) => {
+  viewCart: async (req, res) => {
     try {
       const usersession = req.session.user;
       const categories = await Category.find().lean();
@@ -120,7 +120,7 @@ module.exports = {
           user: true,
           categories,
           usersession,
-          cartProducts,
+          cartProducts
         });
       });
     } catch (error) {
