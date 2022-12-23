@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
@@ -44,12 +45,13 @@ function changeQuantity(productId, count) {
           confirmButtonText: "OK",
         });
         document.getElementById(`${productId}productbody`).remove();
-        document.getElementById(
-          "totalAmount1"
-        ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
-        document.getElementById(
-          "totalAmount2"
-        ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
+        location.reload()
+        // document.getElementById(
+        //   "totalAmount1"
+        // ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
+        // document.getElementById(
+        //   "totalAmount2"
+        // ).innerText = `₹ ${response.productData[0].totalAmount.Amount}`;
       }
     },
   });
@@ -63,6 +65,7 @@ function deleteProduct(productId) {
       if(response.productRemoved){
         Swal.fire("Product Deleted");
         document.getElementById(`${productId}productbody`).remove();
+        location.reload()
       }
     },
   });
@@ -91,6 +94,7 @@ function movetoCart(productId) {
     success: (response) => {
       Swal.fire("Move to Cart");
       document.getElementById(`${productId}wishlistproductbody`).remove();
+      location.reload()
     },
   });
 }
@@ -104,6 +108,7 @@ function deletewishlistProduct(productId) {
       if(response.productRemoved){
         Swal.fire("Product Removed from Wishlist");
         document.getElementById(`${productId}wishlistproductbody`).remove();
+        location.reload()
       }
     },
   });

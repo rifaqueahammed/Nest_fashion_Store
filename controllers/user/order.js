@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const mongoose = require("mongoose");
+const moment = require("moment");
 const Category = require("../../model/category");
 const User = require("../../model/user");
 const Cart = require("../../model/cart");
 const Order = require("../../model/order");
-// const Product = require("../../model/product");
+
+moment().format();
 
 module.exports = {
   checkOut: async (req, res) => {
@@ -102,7 +104,7 @@ module.exports = {
     }
   },
 
-  placeOrder: async (req, res) => {
+  placeOrder: async (req, res, next) => {
     try {
       const addressDetails = req.body;
       const userID = mongoose.Types.ObjectId(req.session.user._id);
@@ -168,7 +170,6 @@ module.exports = {
           addressDetails.paymentMethod === "Cash On Delivery"
             ? "placed"
             : "pending";
-        const objectDate = new Date();
         const newOrder = new Order({
           userId: userID,
           name: addressDetails.name,
@@ -183,12 +184,18 @@ module.exports = {
           totalAmount: cartDetails.totalAmount.Amount,
           orderStatus: status,
           paymentMethod: addressDetails.paymentMethod,
-          orderDate: objectDate,
+          orderDate: moment().format("MMM Do YY"),
+          deliveryDate: moment().add(3, "days").format("MMM Do YY"),
         });
-        newOrder.save().then(async () => {
-          Cart.deleteOne({ userid: userID }).then(() => {
-            res.json({ status: true });
-          });
+        newOrder.save().then(async (order) => {
+          if (order.paymentMethod === "Cash On Delivery") {
+            Cart.deleteOne({ userid: userID }).then(() => {
+              res.json({ success: true });
+            });
+          } else {
+            req.orderId = order._id;
+            next();
+          }
         });
       });
     } catch (error) {
@@ -199,25 +206,37 @@ module.exports = {
   orderConfirmation: (req, res) => {
     try {
       const usersession = req.session.user;
-      res.render('user/orderconfirmation',{usersession})
+      res.render("user/orderconfirmation", { usersession });
     } catch (error) {
       console.log(error);
     }
   },
 
-  viewOrders: async(req, res) => {
+  viewOrders: async (req, res) => {
     try {
       const usersession = req.session.user;
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       const categories = await Category.find().lean();
-      const orders = await Order.find({userId:userID}).lean();
-      res.render('user/orderlisting',{user:true,usersession,categories,orders})
+      const orders = await Order.find({ userId: userID })
+        .sort({ createdAt: -1 })
+        .lean();
+      res.render("user/orderlisting", {
+        user: true,
+        usersession,
+        categories,
+        orders,
+      });
     } catch (error) {
       console.log(error);
     }
   },
 
-
-
-  
+  // viewOrderProducts: (req, res) => {
+  //   try {
+  //     const orderId = req.params.id;
+  //     const userID = mongoose.Types.ObjectId(req.session.user._id);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // },
 };

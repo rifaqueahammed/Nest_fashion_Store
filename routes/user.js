@@ -9,6 +9,7 @@ const productController = require("../controllers/user/product")
 const cartController = require("../controllers/user/cart")
 const wishlistController = require("../controllers/user/wishlist")
 const orderController = require("../controllers/user/order")
+const paymentController = require("../controllers/user/payment")
 const profileController = require("../controllers/user/profile")
 
 /* GET users listing. */
@@ -52,9 +53,16 @@ router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.delet
 /* Order management */
 router.get("/checkOut",verifyLogin.verifyLoginUser,orderController.checkOut);
 router.get("/permenanAddress",verifyLogin.verifyLoginUser,orderController.permenantAddress);
-router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder);
-router.get("/ordersuccess",verifyLogin.verifyLoginUser,orderController.orderConfirmation)
-router.get("/vieworders",verifyLogin.verifyLoginUser,orderController.viewOrders)
+router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder,paymentController.generateRazorpay);
+router.get("/ordersuccess",verifyLogin.verifyLoginUser,orderController.orderConfirmation);
+router.get("/vieworders",verifyLogin.verifyLoginUser,orderController.viewOrders);
+// router.get("/viewOrderProducts/:id",verifyLogin.verifyLoginUser,orderController.viewOrderProducts)
+
+/* payment management */
+router.post("/verifyPayment",verifyLogin.verifyLoginUser,paymentController.veryfyPayment);
+router.get("/paymentFailed",verifyLogin.verifyLoginUser,paymentController.paymentFailed);
+
+
 
 /* signout page. */
 router.get("/logout", userController.dosignOut);

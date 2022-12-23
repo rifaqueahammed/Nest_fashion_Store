@@ -106,7 +106,6 @@ module.exports = {
               { "products.productid": productID },
               { $inc: { "products.$.quantity": 1 } }
             ).then(() => {
-              // req.iD = req.id;
               next();
             });
           } else {
@@ -116,7 +115,6 @@ module.exports = {
                 $push: { products: { productid: productID, quantity: 1 } },
               }
             ).then(() => {
-              // req.iD = req.id;
               next();
             });
           }
@@ -132,7 +130,6 @@ module.exports = {
           ],
         });
         newUserCart.save().then(() => {
-          // req.iD = req.id;
           next();
         });
       }
@@ -144,7 +141,6 @@ module.exports = {
   deletewishlistProduct: (req, res) => {
     try {
       const productID = req.params.id;
-      console.log(productID);
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       Wishlist.updateOne(
         {
