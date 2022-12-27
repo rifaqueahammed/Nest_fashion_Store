@@ -56,10 +56,11 @@ router.get("/permenanAddress",verifyLogin.verifyLoginUser,orderController.permen
 router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder,paymentController.generateRazorpay);
 router.get("/ordersuccess",verifyLogin.verifyLoginUser,orderController.orderConfirmation);
 router.get("/vieworders",verifyLogin.verifyLoginUser,orderController.viewOrders);
-// router.get("/viewOrderProducts/:id",verifyLogin.verifyLoginUser,orderController.viewOrderProducts)
+router.get("/viewOrderProducts/:id",verifyLogin.verifyLoginUser,orderController.viewOrderProducts);
+router.get("/orderCancel/:id",verifyLogin.verifyLoginUser,orderController.orderCancel,orderController.cancelQuantityUpdation)
 
 /* payment management */
-router.post("/verifyPayment",verifyLogin.verifyLoginUser,paymentController.veryfyPayment);
+router.post("/verifyPayment",verifyLogin.verifyLoginUser,paymentController.veryfyPayment,paymentController.quantityUpdation);
 router.get("/paymentFailed",verifyLogin.verifyLoginUser,paymentController.paymentFailed);
 
 

@@ -10,7 +10,8 @@
 </form>
 
 <div class="container-fluid mt-5 mb-5">
-  <table class="table table-success table-striped" id="example">
+   <div class="table-responsive">
+     <table class="table table-success table-striped" id="example">
     <thead>
       <tr>
         <th scope="col">No</th>
@@ -31,7 +32,7 @@
                     <div class="col-auto me-2">
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control-sm border-0"
                         name="category"
                         placeholder="{{this.category}}"
                       />
@@ -55,6 +56,8 @@
       {{/each}}
     </tbody>
   </table>
+   </div>
+  
 </div>
 
 <link

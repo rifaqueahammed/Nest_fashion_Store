@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-center p-5">
       <div class="row">
-        <div class="log text-black p-2 border border-success border-opacity-10">
+        <div class="log text-black p-2 border border-success border-opacity-10 ">
           <div class="px-5 d-flex">
             <div class=""><i
                 class="bi bi-basket2-fill fa-3x me-3 pt-5 mt-xl-4"
@@ -16,7 +16,7 @@
           <div
             class="d-flex align-items-center h-custom-2 px-5 mt-5 pt-5 pt-xl-0 mt-xl-n5"
           >
-            <form style="width: 23rem;" action="/user/login" method="POST">
+            <form  action="/user/login" method="POST"  onsubmit="return checkLoginForm(this)">
 
               <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log
                 in</h3>
@@ -26,11 +26,13 @@
               <div class="form-outline mb-4">
                 <input
                   type="email"
-                  id="form2Example18"
+                  id="email"
                   class="form-control form-control-lg"
                   name="email"
                   placeholder="Email address"
+                  
                 />
+                  <p id="emailError" style="color: red"></p>
               </div>
               <div class="form-outline mb-4">
                 <input
@@ -39,7 +41,9 @@
                   class="form-control form-control-lg"
                   name="password"
                   placeholder="Password"
+                  
                 />
+                <p id="passwordError" style="color: red"></p>
               </div>
               <div class="pt-1 mb-4">
                 <button
@@ -48,16 +52,51 @@
                   type="submit"
                 >LOGIN</button>
               </div>
-              <p>Don't have an account?
+            </form>
+          </div>
+          <div class="ms-5">
+             <p>Don't have an account?
                 <a
                   href="signup"
                   class="text-decoration-none"
                   style="color:#12c2d6;"
                 >Register here</a></p>
-            </form>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+
+  function checkLoginForm(form) {
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+
+  if (email.value === "") {
+    document.getElementById("emailError").innerHTML = "please enter your email";
+    email.focus();
+    return false;
+  }
+  const re =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  if (!re.test(email.value)) {
+    document.getElementById("emailError").innerHTML =
+      "please enter a vaild email";
+    email.focus();
+    return false;
+  }
+ 
+ 
+  if (password.value === "") {
+    document.getElementById("passwordError").innerHTML =
+      "please enter your password";
+    password.focus();
+    return false;
+  }
+  return true;
+}
+
+</script>

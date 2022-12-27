@@ -1,0 +1,248 @@
+<div class="d-flex justify-content-center mt-3"><h2 class="">Dashboard</h2></div>
+<div class="container">
+  <!-- Main -->
+      <main class="py-6 bg-surface-secondary mt-2">
+        <main class="container-fluid">
+          <!-- Card stats -->
+          <div class="row g-6 mb-6">
+            <div class="col-xl-4 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Today's Revenue</span
+                      >
+                      <span class="h3 font-bold mb-0"
+                        >Rs.{{totalOrderToday}}</span
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-credit-card text-info"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Monthly Revenue</span
+                      >
+                      <span class="h3 font-bold mb-0"
+                        >Rs.{{amountPending}}</span
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-calendar text-primary"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Total Revenue</span
+                      >
+                      <span class="h3 font-bold mb-0"
+                        >Rs.{{totalAmount}}</span
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-clock-history text-primary"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Toatal Orders</span
+                      >
+                      <span class="h3 font-bold mb-0">{{allOrders}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-minecart-loaded text-warning"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Order Pending</span
+                      >
+                      <span id="pending" class="h3 font-bold mb-0"
+                        >{{pending}}</span
+                      >
+                      <input
+                        type="hidden"
+                        value="<%= cancelled %>"
+                        id="cancelled"
+                      />
+                      <input type="hidden" value="{{codOrder}}" id="cod" />
+                      <input
+                        type="hidden"
+                        value="{{razorPayOrder}}"
+                        id="razorpay"
+                      />
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-minecart-loaded text-warning"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Order Shipped</span
+                      >
+                      <span id="shipped" class="h3 font-bold mb-0"
+                        >{{processing}}</span
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-minecart-loaded text-warning"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mt-4">
+              <div class="card shadow border-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span
+                        class="h6 font-semibold text-muted text-sm d-block mb-2"
+                        >Order Delivered</span
+                      >
+                      <span id="delivered" class="h3 font-bold mb-0"
+                        >{{delivered}}</span
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <div
+                        class=""
+                      >
+                        <i class="bi bi-minecart-loaded text-warning"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </main>
+      </main>
+      <hr>
+      <div class="row mt-5 mb-5">
+        <div class="col-xl-6 col-12">
+          <canvas id="pie-chart"></canvas>
+        </div>
+        <div class="col-xl-6 col-12">
+          <canvas id="salse-revenue"></canvas>
+        </div>
+      </div>
+</div>
+      
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<script>
+  let pending = document.getElementById("pending").innerHTML;
+  let shipped = document.getElementById("shipped").innerHTML;
+  let delivered = document.getElementById("delivered").innerHTML;
+  let cancelled = document.getElementById("cancelled").value;
+  var ctx5 = document.getElementById("pie-chart").getContext("2d");
+  var myChart5 = new Chart(ctx5, {
+    type: "bar",
+    data: {
+      labels: ["Pending", "Shipped", "Delivered", "Cancelled"],
+      datasets: [
+        {
+          backgroundColor: ["#C2C9C8", "#0B6464", "#515454", "#3E5A5A"],
+          data: [pending, shipped, delivered, cancelled],
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+  let cod = document.getElementById("cod").value;
+  let razorpay = document.getElementById("razorpay").value;
+  var ctx6 = document.getElementById("salse-revenue").getContext("2d");
+  var myChart6 = new Chart(ctx6, {
+    type: "bar",
+    data: {
+      labels: ["COD", "Razorpay"],
+      datasets: [
+        {
+          backgroundColor: ["#C2C9C8", "#515454"],
+          data: [cod, razorpay],
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+</script>

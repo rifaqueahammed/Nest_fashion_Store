@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Crypto = require("crypto");
 const Order = require("../../model/order");
 const Cart = require("../../model/cart");
+const Product = require("../../model/product");
 const instance = require("../../middlewares/razorpay");
 
 module.exports = {
@@ -28,10 +29,9 @@ module.exports = {
     }
   },
 
-  veryfyPayment: async (req, res) => {
+  veryfyPayment: async (req, res,next) => {
     try {
       const details = req.body;
-      const userID = mongoose.Types.ObjectId(req.session.user._id);
       let hmac = Crypto.createHmac("sha256", process.env.key_secret);
       hmac.update(
         `${details.payment.razorpay_order_id}|${details.payment.razorpay_payment_id}`
@@ -45,9 +45,7 @@ module.exports = {
             $set: { orderStatus: "Placed", paymentStatus: "Paid" },
           }
         ).then(() => {
-          Cart.deleteOne({ userid: userID }).then(() => {
-            res.json({ paymentSuccess: true });
-          });
+          next();
         });
       } else {
         res.json({ paymentFailed: true });
@@ -57,6 +55,88 @@ module.exports = {
     }
   },
 
+  quantityUpdation:(req,res) => {
+    try{
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      Cart.aggregate([
+        { $match: { userid: userID } },
+        { $unwind: "$products" },
+        {
+          $project: {
+            productItem: "$products.productid",
+            productQuantity: "$products.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "productItem",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $project: {
+            productItem: 1,
+            productQuantity: 1,
+            productDetails: { $arrayElemAt: ["$productDetails", 0] },
+          },
+        },
+        {
+          $addFields: {
+            productPrice: {
+              $sum: {
+                $multiply: ["$productQuantity", "$productDetails.price"],
+              },
+            },
+          },
+        },
+        {
+          $facet: {
+            data: [{ $match: {} }],
+            totalAmount: [
+              {
+                $group: {
+                  _id: "",
+                  Amount: { $sum: "$productPrice" },
+                },
+              },
+            ],
+            numberOfItems: [{ $count: "totalItems" }],
+          },
+        },
+        {
+          $unwind: "$numberOfItems",
+        },
+        {
+          $unwind: "$totalAmount",
+        },
+      ]).then((result) => {
+        const cartDetails = result[0];
+        Cart.deleteOne({ userid: userID }).then(() => {
+          for (let i = 0; i < cartDetails.data.length; i+=1) {
+            const updatedStock =
+            cartDetails.data[i].productDetails.stock -
+            cartDetails.data[i].productQuantity;
+            Product.updateOne(
+                {
+                  _id: cartDetails.data[i].productDetails._id,
+                },
+                {
+                  stock: updatedStock,
+                }
+              )
+              .then(() => {
+               });
+           }
+           res.json({ paymentSuccess: true });
+         });
+       });
+      }catch{
+      console.log('error')
+    }
+  },
+  
   paymentFailed: (req, res) => {
     try {
       const usersession = req.session.user;

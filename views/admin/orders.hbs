@@ -1,0 +1,217 @@
+<div class="d-flex justify-content-center mt-3"><h2 class="">Orders</h2></div>
+<div class="container-fluid mt-3 mb-5">
+  <div class="table-responsive">
+    <table class="table table-success table-striped" id="example">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Order ID</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">User ID</th>
+        <th scope="col">Total Amount</th>
+        <th scope="col">Payment Status</th>
+        <th scope="col">Order Status</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+        <tr>
+          <td>{{@index}}</td>
+          <td>{{this._id}}</td>
+          <td>{{this.orderDate}}</td>
+          <td>{{this.userId}}</td>
+          <td><i class="bi bi-currency-rupee"></i>{{this.totalAmount}}</td>
+          <td>{{this.paymentStatus}}</td>
+          <td>{{this.orderStatus}}</td>
+          <td>
+            <div class="d-flex justify-content-end">
+              <div class="me-3">
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-{{this._id}}"
+                > View</button>
+                <!-- Modal -->
+                <div
+                  class="modal fade"
+                  id="modal-{{this._id}}"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog modal-dialog-scrollable modal-lg"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5
+                          class="modal-title"
+                          id="ModalLabel{{this._id}}"
+                        >Order Details</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">No</th>
+                              <th scope="col">id</th>
+                              <th scope="col"></th>
+                              <th scope="col">quantity</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {{#each this.orderItems}}
+                              <tr>
+                                <th scope="row">{{@index}}</th>
+                                <td>{{this.productid}}</td>
+                                <td><img
+                                    src="/images/{{this.productid}}.jpg"
+                                    class="img-thumbnail"
+                                    alt=""
+                                    style="width:4rem"
+                                  /></td>
+                                <td>{{this.quantity}}</td>
+                              </tr>
+                            {{/each}}
+                          </tbody>
+                        </table>
+                        <hr />
+                        <div class="d-flex justify-content-around">
+                          <div>
+                            <h6>User Name:</h6><p>{{this.name}}</p>
+                            <h6>Delivery Address:</h6>
+                            <p>{{this.deliveryAddress.addressline1}}</p>
+                            <p>{{this.deliveryAddress.addressline2}}</p>
+                            <p>{{this.deliveryAddress.country}}</p>
+                            <p>{{this.deliveryAddress.state}}</p>
+                            <p>{{this.deliveryAddress.pincode}}</p>
+                          </div>
+                          <div>
+                            <p><strong>Total Amount:</strong><i
+                                class="bi bi-currency-rupee"
+                              ></i>{{this.totalAmount}}</p>
+                            <p>Order Status:{{this.orderStatus}}</p>
+                            <p>Payment Method:{{this.paymentMethod}}</p>
+                            <p>Payment Status:{{this.paymentStatus}}</p>
+                            <p>Order Date:{{this.orderDate}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >Close</button>
+                        {{! <button type="button" class="btn btn-primary">Save changes</button> }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="me-3">
+              
+                <!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalstatus-{{this._id}}">
+ Edit
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalstatus-{{this._id}}" tabindex="-1" aria-labelledby="modalstatus-{{this._id}}Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalstatus-{{this._id}}Label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="/admin/editOrderStatus/{{this._id}}" method="post">
+          <div class="mb-3">
+            <label
+              for="recipient-name"
+              name="orderStatus"
+              class="col-form-label"
+            >
+              Order Status
+            </label>
+            <select
+              class="form-select"
+              name="orderStatus"
+              aria-label="Default select example"
+            >
+              <option selected>{{this.orderStatus}}</option>
+              <option value="Pending" name="orderStatus">Pending</option>
+              <option value="Shipped" name="orderStatus">Shipped</option>
+              <option value="Delivered" name="orderStatus">Delivered</option>
+              <option value="Cancelled" name="orderStatus">Cancelled</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label
+              for="message-text"
+              name="paymentStatus"
+              class="col-form-label"
+              >Payment Status</label
+            >
+            <select
+              class="form-select"
+              name="paymentStatus"
+              aria-label="Default select example"
+            >
+              <option selected>{{this.paymentStatus}}</option>
+              <option value="Not Paid" name="paymentStatus">Not Paid</option>
+              <option value="Paid" name="paymentStatus">Paid</option>
+            </select>
+          </div>
+           <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Save changes</button>
+      </div>
+      </form>
+        
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+              </div>
+            </div>
+            </td>
+          </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  </div>
+  
+</div>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"
+/>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"
+></script>
+<script
+  src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"
+></script>
+
+<script>
+  $(document).ready(function () { $('#example').DataTable(); });
+</script>

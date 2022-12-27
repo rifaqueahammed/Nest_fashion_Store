@@ -123,8 +123,8 @@ module.exports = {
           cartProducts
         });
       });
-    } catch (error) {
-      console.log(error);
+    } catch{
+      res.render('user/error500')
     }
   },
 

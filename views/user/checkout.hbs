@@ -19,7 +19,7 @@
                      </div>
                     <div><p class="text-muted">{{this.productDetails.product_name}}</p></div>
                     <div><small class="text-muted">{{this.productQuantity}}</small></div>
-                    <div> <h6 class="text-muted">₹ {{this.productPrice}}</h6></div>
+                    <div> <h6 class="text-muted"><span><i class="bi bi-currency-rupee"></i>{{this.productPrice}}</h6></div>
                 </li>
                  {{/each}}
                 {{!-- <li class="list-group-item d-flex justify-content-between bg-light">
@@ -30,7 +30,7 @@
                 </li> --}}
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total </span>
-                    <strong id="total-amount">₹ {{cart.totalAmount.Amount}}</strong>
+                    <strong id="total-amount"><span><i class="bi bi-currency-rupee"></i>{{cart.totalAmount.Amount}}</strong>
                 </li>
             </ul>
             {{!-- <form class="card p-2">
@@ -44,47 +44,48 @@
         </div>
         <div class="col-md-8 order-md-1">
             <h5 class="mb-3">Billing address</h5>
-            <form class="" novalidate="" id="placeorder-form" >
+            <form class="" id="placeorder-form" onsubmit="return checkAddressForm(this)">
                 <div class="mb-3">
-                    <label for="username">Name</label>
+                    <label for="name">Name</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required="">
-                        <div class="invalid-feedback" style="width: 100%;"> Your username is required. </div>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" >
+                         <p id="nameError" style="color: red"></p>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="address1">Line 1</label>
-                    <input type="text" class="form-control" id="address-line1" name="address1" placeholder="Housename" required="">
-                    <div class="invalid-feedback"> Please enter your shipping address. </div>
+                    <input type="text" class="form-control" id="address-line1" name="address1" placeholder="Housename" >
+                     <p id="addressline1Error" style="color: red"></p>
                 </div>
                 <div class="mb-3">
                     <label for="address2">Line 2</label>
                     <input type="text" class="form-control" id="address-line2"  name="address2" placeholder="landmark area district  postoffice">
+                   <p id="addressline2Error" style="color: red"></p>
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label for="country">Country</label>
-                        <select class="custom-select d-block w-100" id="country" name="country" required="">
+                        <select class="custom-select d-block w-100" id="country" name="country">
                             <option value="">Choose...</option>
                             <option>India</option>
                         </select>
-                        <div class="invalid-feedback"> Please select a valid country. </div>
+                        <p id="countryError" style="color: red"></p>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="state">State</label>
-                        <select class="custom-select d-block w-100" id="state" value="" name="state" required="">
+                        <select class="custom-select d-block w-100" id="state" value="" name="state" >
                             <option value="">Choose...</option>
                             <option>Kerala</option>
                             <option>Karnataka</option>
                             <option>Tamilnadu</option>
                             <option>Telengna</option>
                         </select>
-                        <div class="invalid-feedback"> Please provide a valid state. </div>
+                        <p id="stateError" style="color: red"></p>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="pincode">Pincode</label>
-                        <input type="text" class="form-control" id="pincode" name="pincode" placeholder="" required="">
-                        <div class="invalid-feedback"> Pincode required. </div>
+                        <input type="text" class="form-control" id="pincode" name="pincode" placeholder="">
+                        <p id="pincodeError" style="color: red"></p>
                     </div>
                 </div>
                 <hr class="mb-4">
@@ -113,12 +114,66 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<script> 
+<script>
 
+// form-validation
+function checkAddressForm(form) {
+    let username = document.getElementById("name");
+    let addressline1 = document.getElementById("address-line1");
+    let addressline2 = document.getElementById("address-line2");
+    let country = document.getElementById("country");
+    let state = document.getElementById("state");
+    let pincode = document.getElementById("pincode");
+
+
+   var regex = /^[a-zA-Z\s]+$/;
+   if (username.value == "") {
+    document.getElementById("nameError").innerHTML = "please enter your name";
+    username.focus();
+    return false;
+  }
+   if (regex.test(username.value) === false) {
+    document.getElementById("nameError").innerHTML =
+      "name should not contain special characters";
+    username.focus();
+    return false;
+  }
+   if (addressline1.value == "") {
+    document.getElementById("addressline1Error").innerHTML = "please enter your this field";
+    username.focus();
+    return false;
+  }
+   if (addressline2.value == "") {
+    document.getElementById("addressline2Error").innerHTML = "please enter your this field";
+    username.focus();
+    return false;
+  }
+  if (country.value == "") {
+    document.getElementById("countryError").innerHTML = "please select your country";
+    username.focus();
+    return false;
+  }
+  if (state.value == "") {
+    document.getElementById("stateError").innerHTML = "please select your state";
+    username.focus();
+    return false;
+  }
+  if (pincode.value == "") {
+    document.getElementById("pincodeError").innerHTML = "please enter your pincode";
+    username.focus();
+    return false;
+  }
+   return true;
+}
+
+
+// form-submission
 $("#placeorder-form").submit((e) => { 
+  const verify = checkAddressForm();
   const totalAmount = document.getElementById("total-amount").innerHTML;
-  e.preventDefault(); 
-  $.ajax({
+  e.preventDefault();
+   if(verify){
+     $.ajax({
     url:'/user/placeorder',
     method:'post', 
     data: $("#placeorder-form").serialize(),
@@ -131,6 +186,9 @@ $("#placeorder-form").submit((e) => {
     }
 
   })
+    
+  } 
+ 
 });
 
 // online-payment
@@ -142,7 +200,7 @@ function razorPayPayment(order){
     "currency": "INR",
     "name": "Nest fashion",
     "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
+    "image": "/images/nestfashionLogo.png",
     "order_id": order.id, 
     "handler": function (response){
         veryfyPayment(response,order);

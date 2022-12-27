@@ -34,7 +34,7 @@ module.exports = {
 
   // admin home
   homeView: (req, res) => {
-    res.render("admin/adminhome", { admin: true });
+    res.redirect('/admin/dashboard');
   },
 
   usersView: async (req, res) => {

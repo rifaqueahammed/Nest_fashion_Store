@@ -1,36 +1,34 @@
-<div class="table-responsive p-5">
-  <table class="table align-middle mb-0 bg-white">
-    <thead class="bg-light">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col"></th>
-        <th scope="col">Order Date</th>
-        <th scope="col">Delivery Date</th>
-        <th scope="col">Total Amount</th>
-        <th scope="col">Payment</th>
-        <th scope="col">Order Status</th>
-        <th scope="col">View Products</th>
-        <th scope="col">Cancel Order</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each orders}}
-      <tr>
-        <td></td>
-        <td>{{this._id}} </td>
-        <td>{{this.orderDate}}</td>
-        <td>{{this.deliveryDate}}</td>
-        <td>{{this.totalAmount}}</td>
-        <td>{{this.paymentStatus}}</td>
-        <td>{{this.orderStatus}}</td>
-        <td>
-          <a href="/user/viewOrderProducts/{{this._id}}"><button type="button" class="btn btn-info">View Products</button></a>
-        </td>
-        <td>
-          <a href="/user/orderCancel/{{this._id}}"><button type="button" class="btn btn-danger">Cancel</button></a>
-        </td>
-      </tr>
-        {{/each}}
-    </tbody>
-  </table>
+<div class="container mt-5 mb-5">
+  <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-4">
+    {{#each productData}}
+        <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
+          {{!-- <a href="/user/getProduct/{{this.productDetails._id}}" class="text-decoration-none"> --}}
+           <div class="d-flex justify-content-end align-items-end">
+                  <h5><span class="badge bg-info ms-2">{{this.productQuantity}}</span></h5>
+                </div> 
+          
+          <div class="card">
+            <img
+              src="/images/{{this.productDetails._id}}.jpg"
+              class="card-img-top img-thumbnail"
+              alt=""
+              style="height: 250px; width: 250px;"
+            />
+            <div class="card-body mx-auto">
+              <h4 class="card-title text" style="color: #000000;">{{this.productDetails.product_name}}</h4>
+              <div class="text-center"><h5
+                  class="card-title fw-bold"
+                  style="color: #000000;"
+                >Rs.{{this.productDetails.price}}</h5></div>
+              <p class="card-text" style="color: #575555;">
+                {{this.productDetails.description}}
+              </p>
+            </div>
+          </div></a>
+          {{!-- <div class="mx-auto m-2 text-center">
+              <button type="button" onclick="wishlist('{{this._id}}')" class="btn btn-danger text-white fs-5 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i>Wishlist</button>
+          </div> --}}
+        </div>
+    {{/each}}
+  </div>
 </div>

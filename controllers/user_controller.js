@@ -13,8 +13,8 @@ module.exports = {
       const categories = await Category.find().lean();
       const products = await Product.find().lean().populate("category");
       res.render("user/userhome", { user: true, categories, products });
-    } catch (error) {
-      console.log(error);
+    } catch{
+     res.render('user/error500')
     }
   },
 
@@ -40,6 +40,7 @@ module.exports = {
       res.redirect("/user");
     } else {
       res.render("user/login", { err_massage: req.session.error });
+      req.session.error=false
     }
   },
 

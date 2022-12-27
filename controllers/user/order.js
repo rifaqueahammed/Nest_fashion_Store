@@ -6,6 +6,7 @@ const Category = require("../../model/category");
 const User = require("../../model/user");
 const Cart = require("../../model/cart");
 const Order = require("../../model/order");
+const Product = require("../../model/product");
 
 moment().format();
 
@@ -168,8 +169,8 @@ module.exports = {
         const cartDetails = result[0];
         const status =
           addressDetails.paymentMethod === "Cash On Delivery"
-            ? "placed"
-            : "pending";
+            ? "Placed"
+            : "Pending";
         const newOrder = new Order({
           userId: userID,
           name: addressDetails.name,
@@ -190,6 +191,19 @@ module.exports = {
         newOrder.save().then(async (order) => {
           if (order.paymentMethod === "Cash On Delivery") {
             Cart.deleteOne({ userid: userID }).then(() => {
+              for (let i = 0; i < cartDetails.data.length; i += 1) {
+                const updatedStock =
+                  cartDetails.data[i].productDetails.stock -
+                  cartDetails.data[i].productQuantity;
+                Product.updateOne(
+                  {
+                    _id: cartDetails.data[i].productDetails._id,
+                  },
+                  {
+                    stock: updatedStock,
+                  }
+                ).then(() => {});
+              }
               res.json({ success: true });
             });
           } else {
@@ -231,12 +245,117 @@ module.exports = {
     }
   },
 
-  // viewOrderProducts: (req, res) => {
-  //   try {
-  //     const orderId = req.params.id;
-  //     const userID = mongoose.Types.ObjectId(req.session.user._id);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // },
+  viewOrderProducts: async (req, res) => {
+    try {
+      const usersession = req.session.user;
+      const orderId = mongoose.Types.ObjectId(req.params.id);
+      const categories = await Category.find().lean();
+      Order.aggregate([
+        {
+          $match: { _id: orderId },
+        },
+        {
+          $unwind: "$orderItems",
+        },
+        {
+          $project: {
+            totalAmount: "$totalAmount",
+            orderedproduct: "$orderItems.productid",
+            productQuantity: "$orderItems.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "orderedproduct",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $project: {
+            totalAmount: 1,
+            productQuantity: 1,
+            productDetails: { $arrayElemAt: ["$productDetails", 0] },
+          },
+        },
+      ]).then((productData) => {
+        res.render("user/orderedproducts", {
+          user: true,
+          usersession,
+          categories,
+          productData,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  orderCancel: (req, res, next) => {
+    try {
+      const orderId = mongoose.Types.ObjectId(req.params.id);
+      Order.updateOne(
+        { _id: orderId },
+        {
+          $set: { orderStatus: "Cancelled" },
+        }
+      ).then(() => {
+        next();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  cancelQuantityUpdation: (req, res) => {
+    try {
+      const orderId = mongoose.Types.ObjectId(req.params.id);
+      Order.aggregate([
+        {
+          $match: { _id: orderId },
+        },
+        {
+          $unwind: "$orderItems",
+        },
+        {
+          $project: {
+            orderedproduct: "$orderItems.productid",
+            productQuantity: "$orderItems.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "orderedproduct",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $project: {
+            orderedproduct: 1,
+            productQuantity: 1,
+            productDetails: { $arrayElemAt: ["$productDetails", 0] },
+          },
+        },
+      ]).then((result) => {
+        for (let i = 0; i < result.length; i += 1) {
+          const updatedStock =
+          result[i].productDetails.stock + result[i].productQuantity;
+          Product.updateOne(
+            {
+              _id: result[i].productDetails._id,
+            },
+            {
+              stock: updatedStock,
+            }
+          ).then(() => {});
+        }
+        res.redirect("/user/vieworders");
+      });
+    } catch {
+      console.log("error");
+    }
+  },
 };

@@ -16,7 +16,7 @@
           <div
             class="d-flex align-items-center h-custom-2 px-5 mt-5 pt-5 pt-xl-0 mt-xl-n5"
           >
-            <form style="width: 23rem;" action="/user/signup" method="POST">
+            <form  action="/user/signup"  id="form" method="POST" onsubmit="return checkSignUpForm(this)">
 
               <h3
                 class="fw-normal mb-3 pb-3"
@@ -28,47 +28,52 @@
               <div class="form-outline mb-4">
                 <input
                   type="text"
-                  id="form2Example18"
-                  class="form-control form-control-lg"
+                  id="name"
+                  class="form-control form-control-default"
                   name="name"
                   placeholder="Your Name"
                 />
+                 <p id="nameError" style="color: red"></p>
               </div>
               <div class="form-outline mb-4">
                 <input
                   type="email"
-                  id="form2Example18"
-                  class="form-control form-control-lg"
+                  id="email"
+                  class="form-control form-control-default"
                   name="email"
                   placeholder="Email address"
                 />
+                <p id="emailError" style="color: red"></p>
               </div>
               <div class="form-outline mb-4">
                 <input
                   type="number"
-                  id="form2Example28"
-                  class="form-control form-control-lg"
+                  id="mobile_number"
+                  class="form-control form-control-default"
                   name="mobile_number"
                   placeholder="Mobile Number"
                 />
+                 <p id="mobileerror" style="color: red"></p>
               </div>
               <div class="form-outline mb-4">
                 <input
                   type="password"
-                  id="form2Example28"
-                  class="form-control form-control-lg"
+                  id="password"
+                  class="form-control form-control-default"
                   name="password"
                   placeholder="Password"
                 />
+                 <p id="passwordError" style="color: red"></p>
               </div>
               <div class="form-outline mb-4">
                 <input
                   type="password"
-                  id="form2Example28"
-                  class="form-control form-control-lg"
+                  id="confirm_password"
+                  class="form-control form-control-default"
                   name="confirm_password"
                   placeholder="Confirm Password"
                 />
+                <p id="confirmpasswordError" style="color: red"></p>
               </div>
               <div class="pt-1 mb-4">
                 <button
