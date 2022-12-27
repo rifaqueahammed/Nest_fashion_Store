@@ -2,7 +2,6 @@
   <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-4">
     {{#each productData}}
         <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
-          {{!-- <a href="/user/getProduct/{{this.productDetails._id}}" class="text-decoration-none"> --}}
            <div class="d-flex justify-content-end align-items-end">
                   <h5><span class="badge bg-info ms-2">{{this.productQuantity}}</span></h5>
                 </div> 
@@ -25,9 +24,6 @@
               </p>
             </div>
           </div></a>
-          {{!-- <div class="mx-auto m-2 text-center">
-              <button type="button" onclick="wishlist('{{this._id}}')" class="btn btn-danger text-white fs-5 fw-bold"><span><i class="bi bi-heart-fill fa me-2"></i>Wishlist</button>
-          </div> --}}
         </div>
     {{/each}}
   </div>

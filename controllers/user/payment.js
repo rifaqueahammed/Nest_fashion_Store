@@ -24,12 +24,12 @@ module.exports = {
           res.json(order);
         }
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
-  veryfyPayment: async (req, res,next) => {
+  veryfyPayment: async (req, res, next) => {
     try {
       const details = req.body;
       let hmac = Crypto.createHmac("sha256", process.env.key_secret);
@@ -50,13 +50,13 @@ module.exports = {
       } else {
         res.json({ paymentFailed: true });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
-  quantityUpdation:(req,res) => {
-    try{
+  quantityUpdation: (req, res) => {
+    try {
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       Cart.aggregate([
         { $match: { userid: userID } },
@@ -114,35 +114,33 @@ module.exports = {
       ]).then((result) => {
         const cartDetails = result[0];
         Cart.deleteOne({ userid: userID }).then(() => {
-          for (let i = 0; i < cartDetails.data.length; i+=1) {
+          for (let i = 0; i < cartDetails.data.length; i += 1) {
             const updatedStock =
-            cartDetails.data[i].productDetails.stock -
-            cartDetails.data[i].productQuantity;
+              cartDetails.data[i].productDetails.stock -
+              cartDetails.data[i].productQuantity;
             Product.updateOne(
-                {
-                  _id: cartDetails.data[i].productDetails._id,
-                },
-                {
-                  stock: updatedStock,
-                }
-              )
-              .then(() => {
-               });
-           }
-           res.json({ paymentSuccess: true });
-         });
-       });
-      }catch{
-      console.log('error')
+              {
+                _id: cartDetails.data[i].productDetails._id,
+              },
+              {
+                stock: updatedStock,
+              }
+            ).then(() => {});
+          }
+          res.json({ paymentSuccess: true });
+        });
+      });
+    } catch {
+      res.render("user/error500");
     }
   },
-  
+
   paymentFailed: (req, res) => {
     try {
       const usersession = req.session.user;
       res.render("user/paymentfailed", { usersession });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 };

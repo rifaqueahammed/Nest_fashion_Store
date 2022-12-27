@@ -79,10 +79,8 @@ module.exports = {
         allOrderDetails,
         amountPending: Math.ceil(amountPending),
       });
-
-      // res.render('admin/dashboard',{admin:true})
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 };

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border border-light sticky-top">
        <div class="ms-lg-5">
-          <a class="navbar-brand d-flex" href="/user/">
+          <a class="navbar-brand d-flex" href="/">
           <i class="bi bi-basket2-fill fa-2x mt-2 me-1" style="color: #12c2d6;"></i>
           <div class="d-flex"><span class="h1 fw-bold" style="color: #709085;">Nest<h4 style="color:#709085;">fashion</h4></span></div></a>
         </div>
@@ -12,12 +12,12 @@
         <div class="collapse navbar-collapse d-lg-flex ms-1 justify-content-around" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto ml-lg-5 ">
             <li class="nav-item active">
-              <a class="nav-link" href="/user/"><span class="h4 font-weight-bold">Home</span></a></span></a>
+              <a class="nav-link" href="/"><span class="h4 font-weight-bold">Home</span></a></span></a>
             </li>
             {{#each categories}}
              {{#unless this.isBlocked}}
             <li class="nav-item active">
-              <a class="nav-link" href="/user/getCategoryPage/{{this._id}}"><span class="h4 font-weight-bold">{{this.category}}</span></a></span></a>
+              <a class="nav-link" href="/getCategoryPage/{{this._id}}"><span class="h4 font-weight-bold">{{this.category}}</span></a></span></a>
             </li>
             {{/unless}}
             {{/each}}
@@ -32,9 +32,9 @@
             </div>
            
             <div class="mr-lg-4 d-flex">
-             <div><a class="me-3" href="/user/profile" style="color:#12c2d6 ;"><i class="bi bi-person-square fa-2x mr-4"></i></a></div>
-              <div><a  class="me-3" href="/user/viewwishlist" style="color:#12c2d6 ;"><i class="bi bi-heart-fill fa-2x mr-4"></i></a></div>
-              <div class="position-relative"><a  href="/user/getCart/{{usersession._id}}" style="color:#12c2d6 ;"><i class="bi bi-cart-fill fa-2x mr-4 "></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">{{cartProducts.numberOfItems.totalItems}}</span></a></div>
+             <div><a class="me-3" href="/profile" style="color:#12c2d6 ;"><i class="bi bi-person-square fa-2x mr-4"></i></a></div>
+              <div><a  class="me-3" href="/viewwishlist" style="color:#12c2d6 ;"><i class="bi bi-heart-fill fa-2x mr-4"></i></a></div>
+              <div class="position-relative"><a  href="/getCart/{{usersession._id}}" style="color:#12c2d6 ;"><i class="bi bi-cart-fill fa-2x mr-4 "></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">{{cartProducts.numberOfItems.totalItems}}</span></a></div>
             </div>
            
           </div>
@@ -49,9 +49,9 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
        {{#if usersession}}
-      <a class="dropdown-item" href="/user/logout">Logout</a>
+      <a class="dropdown-item" href="/logout">Logout</a>
       {{else}}
-     <a class="dropdown-item" href="/user/login">Login</a>
+     <a class="dropdown-item" href="/login">Login</a>
     {{/if}}
       
     </div>

@@ -35,8 +35,8 @@ module.exports = {
           }
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 
@@ -47,8 +47,8 @@ module.exports = {
         .lean()
         .populate("category");
       res.render("admin/editproduct", { admin: true, product });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 
@@ -73,8 +73,8 @@ module.exports = {
         }
         res.redirect("/admin/products");
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 
@@ -87,7 +87,7 @@ module.exports = {
         }
       );
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 };

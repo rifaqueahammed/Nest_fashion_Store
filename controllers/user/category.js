@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const Category = require("../../model/category");
 const Product = require("../../model/product");
 
@@ -16,7 +15,7 @@ module.exports = {
         usersession,
       });
     } catch {
-      console.log("error");
+      res.render('user/error500')
     }
   },
 };

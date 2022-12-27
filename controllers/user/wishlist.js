@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 const mongoose = require("mongoose");
 const Wishlist = require("../../model/wishlist");
 const Cart = require("../../model/cart");
@@ -56,8 +55,8 @@ module.exports = {
           res.json({ status: "wishlisted" });
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -66,8 +65,11 @@ module.exports = {
       const usersession = req.session.user;
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       const categories = await Category.find().lean();
+      let wishlistCount = 0;
       const wishlist = await Wishlist.findOne({ userid: userID }).lean();
-      const wishlistCount = wishlist.products.length;
+      if (wishlist) {
+        wishlistCount = wishlist.products.length;
+      }
       if (wishlistCount >= 1) {
         res.render("user/wishlist", {
           user: true,
@@ -83,14 +85,13 @@ module.exports = {
           wishlist,
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
   movetoCart: async (req, res, next) => {
     try {
-      console.log(req.params.id);
       const productID = req.params.id;
       const userID = req.session.user._id;
       const userCart = await Cart.findOne({ userid: userID });
@@ -133,8 +134,8 @@ module.exports = {
           next();
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -152,8 +153,8 @@ module.exports = {
       ).then(() => {
         res.json({ productRemoved: true });
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 };

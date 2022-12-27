@@ -25,10 +25,10 @@
         <td>{{this.paymentStatus}}</td>
         <td>{{this.orderStatus}}</td>
         <td>
-          <a href="/user/viewOrderProducts/{{this._id}}"><button type="button" class="btn btn-info">View Products</button></a>
+          <a href="/viewOrderProducts/{{this._id}}"><button type="button" class="btn btn-info">View Products</button></a>
         </td>
         <td>
-          <a href="/user/orderCancel/{{this._id}}">
+          <a href="/orderCancel/{{this._id}}">
           <button type="button" class="btn btn-danger" id="{{this._id}}cancellbutton">Cancel</button>
           </a>
         </td>
@@ -52,7 +52,7 @@
               <i class="bi bi-truck fa-2x fa-6x text-danger"></i>
               <h3><strong>Your No Orders</strong></h3>
               <a
-                href="/user/"
+                href="/"
                 class="btn btn-info cart-btn-transform m-3 text-decoration-none"
                 data-abc="true"
               >Continue Shopping</a>
@@ -64,19 +64,3 @@
   </div>
 </section>
 {{/if}}
-
-{{!-- <script>
-  
-  function //cancelOrder(orderId){
-   // $.ajax({
-       // url:`/user/orderCancel/${orderId}`,
-      //  method:'get',
-       // success:(response) => {
-            if(response.cancelled){
-                // document.getElementById(`${orderId}cancellbutton`).remove();
-            }
-        }
-    })
-}
-
-</script> --}}

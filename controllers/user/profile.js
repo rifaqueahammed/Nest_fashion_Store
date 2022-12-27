@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 const mongoose = require("mongoose");
 const Category = require("../../model/category");
 const User = require("../../model/user");
@@ -17,8 +16,8 @@ module.exports = {
         usersession,
         address,
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -33,10 +32,10 @@ module.exports = {
         },
         { upsert: true }
       ).then(() => {
-        res.redirect("/user/profile");
+        res.redirect("/profile");
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -45,8 +44,8 @@ module.exports = {
     const usersession = req.session.user;
     try {
       res.render("user/accountedit", { user: true, categories, usersession });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 };

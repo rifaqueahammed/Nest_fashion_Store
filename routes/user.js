@@ -24,7 +24,6 @@ router.get("/signup", userController.userSignup);
 router.post("/signup", userController.dosignUp);
 
 /* GET signup OTP validation. */
-router.get("/otpValidation", userController.userOTPsignUp);
 router.post("/otpValidation", userController.doOTPsignUp);
 
 /* Category management */

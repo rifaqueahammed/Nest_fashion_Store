@@ -9,8 +9,8 @@ module.exports = {
     try {
       const orders = await Order.find().sort({ createdAt: -1 }).lean();
       res.render("admin/orders", { admin: true, orders });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 
@@ -32,8 +32,8 @@ module.exports = {
           res.redirect("/admin/orders");
         }
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("admin/error500");
     }
   },
 
@@ -84,7 +84,7 @@ module.exports = {
         res.redirect("/admin/orders");
       });
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 };

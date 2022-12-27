@@ -7,7 +7,7 @@
 // chekout
 function addtoCart(productId) {
   $.ajax({
-    url: `/user/addToCart/${productId}`,
+    url: `/addToCart/${productId}`,
     method: "get",
     success: (response) => {
       Swal.fire("Added to Cart");
@@ -18,7 +18,7 @@ function addtoCart(productId) {
 function changeQuantity(productId, count) {
   const quantity = parseInt(document.getElementById(productId).innerHTML, 10);
   $.ajax({
-    url: "/user/changeProductQuantity",
+    url: "/changeProductQuantity",
     data: {
       productId,
       count,
@@ -59,7 +59,7 @@ function changeQuantity(productId, count) {
 
 function deleteProduct(productId) {
   $.ajax({
-    url: `/user/deleteProduct/${productId}`,
+    url: `/deleteProduct/${productId}`,
     method: "get",
     success: (response) => {
       if(response.productRemoved){
@@ -75,7 +75,7 @@ function deleteProduct(productId) {
 
 function wishlist(productId) {
   $.ajax({
-    url: `/user/wishlist/${productId}`,
+    url: `/wishlist/${productId}`,
     method: "get",
     success: (response) => {
       if(response.alreadyWishlisted){
@@ -89,7 +89,7 @@ function wishlist(productId) {
 
 function movetoCart(productId) {
   $.ajax({
-    url: `/user/movetoCart/${productId}`,
+    url: `/movetoCart/${productId}`,
     method: "get",
     success: (response) => {
       Swal.fire("Move to Cart");
@@ -102,7 +102,7 @@ function movetoCart(productId) {
 
 function deletewishlistProduct(productId) {
   $.ajax({
-    url: `/user/deletewishlistProduct/${productId}`,
+    url: `/deletewishlistProduct/${productId}`,
     method: "get",
     success: (response) => {
       if(response.productRemoved){

@@ -11,7 +11,7 @@
         >
           <li class="nav-item">
             <a
-              href="/user/profile"
+              href="/profile"
               class="nav-link link-info align-middle px-0"
             >
               <i class="fs-4 bi bi-person-square"></i>
@@ -20,18 +20,18 @@
           </li>
 
           <li>
-            <a href="/user/vieworders" class="nav-link link-info px-0 align-middle">
+            <a href="/vieworders" class="nav-link link-info px-0 align-middle">
               <i class="fs-4 bi-table"></i>
               <span class="ms-1 d-none d-sm-inline">Orders</span></a>
           </li>
 
           <li>
-            <a href="/user/profileedit" class="nav-link link-info px-0 align-middle">
+            <a href="/profileedit" class="nav-link link-info px-0 align-middle">
               <i class="fs-4 bi bi-person-fill-gear"></i>
               <span class="ms-1 d-none d-sm-inline">Edit Account</span></a>
           </li>
           <li>
-            <a href="/user/logout" class="nav-link link-info px-0 align-middle">
+            <a href="/logout" class="nav-link link-info px-0 align-middle">
               <i class="fs-4 bi bi-power"></i>
               <span class="ms-1 d-none d-sm-inline">Logout</span></a>
           </li>
@@ -138,36 +138,8 @@
                       aria-label="Close"
                     ></button>
                   </div>
-                  <form action="/user/addPermanentAddress" method="post">
+                  <form action="/addPermanentAddress" method="post">
                     <div class="modal-body">
-                      {{!-- <div class="mb-3">
-                        <label
-                          for="recipient-name"
-                          class="col-form-label"
-                        >Name:</label>
-                        <input
-                          required
-                          type="text"
-                          class="form-control"
-                          id="name"
-                          name="name"
-                        />
-                        <p id="nameError" style="color: red"></p>
-                      </div> --}}
-                      {{!-- <div class="mb-3">
-                        <label
-                          for="recipient-name"
-                          class="col-form-label"
-                        >Mobile Number:</label>
-                        <input
-                          required
-                          type="text"
-                          class="form-control"
-                          id="mobile"
-                          name="mobile_number"
-                        />
-                        <p id="mobileError" style="color: red"></p>
-                      </div> --}}
                       <div class="mb-3">
                         <label
                           for="recipient-name"

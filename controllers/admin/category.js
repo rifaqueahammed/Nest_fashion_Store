@@ -23,7 +23,7 @@ module.exports = {
         }
       });
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 
@@ -37,7 +37,7 @@ module.exports = {
         res.redirect("/admin/category");
       });
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 
@@ -51,7 +51,7 @@ module.exports = {
         res.redirect("/admin/category");
       });
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 };

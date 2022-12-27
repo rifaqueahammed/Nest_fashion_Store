@@ -4,8 +4,7 @@ const User = require("../model/user");
 const Product = require("../model/product");
 const Category = require("../model/category");
 const mailer = require("../middlewares/otpValidation");
-
-let body;
+const Otp = require("../model/otp");
 
 module.exports = {
   guestHomeView: async (req, res) => {
@@ -30,14 +29,14 @@ module.exports = {
         categories,
       });
     } catch {
-      console.log("error");
+      res.render('user/error500');
     }
   },
 
   // user Login
   userLogin: (req, res) => {
     if (req.session.user) {
-      res.redirect("/user");
+      res.redirect("/");
     } else {
       res.render("user/login", { err_massage: req.session.error });
       req.session.error=false
@@ -58,7 +57,7 @@ module.exports = {
             res.redirect("login");
           } else {
             req.session.user = user;
-            res.redirect("/user");
+            res.redirect("/");
           }
         } else {
           req.session.error = "Wrong password";
@@ -69,7 +68,7 @@ module.exports = {
         res.redirect("login");
       }
     } catch {
-      console.log("error");
+      res.render('user/error500');
     }
   },
 
@@ -80,17 +79,17 @@ module.exports = {
 
   dosignUp: (req, res) => {
     try {
-      body = new User({ ...req.body });
+      const userData = req.body;
       if (req.body.password === req.body.confirm_password) {
         User.findOne({
-          $or: [{ email: body.email }, { mobile_number: body.mobile_number }],
+          $or: [{ email: userData.email }, { mobile_number: userData.mobile_number }],
         }).then(async (result) => {
           if (result) {
             res.render("user/signup", { err_massage: "User Already Exist" });
           } else {
             const mailDetails = {
               from: process.env.nodmailer_email,
-              to: body.email,
+              to: userData.email,
               subject: "Nest fashion OTP login",
               html: `<p>Your OTP For Nest fashion login is ${mailer.OTP}</p>`,
             };
@@ -98,8 +97,13 @@ module.exports = {
               if (err) {
                 console.log(err);
               } else {
-                console.log("Email sent successfully");
-                res.redirect("/user/otpValidation");
+                const newOtp = new Otp({
+                  otp: mailer.OTP,
+                  email:userData.email
+                });
+                newOtp.save().then(() => {
+                        res.render("user/otpLogin", {userData});
+                      });
               }
             });
           }
@@ -108,41 +112,45 @@ module.exports = {
         res.render("user/signup", { err_massage: "Password must be same" });
       }
     } catch {
-      console.log("error");
+      res.render('user/error500');
     }
-  },
-
-  // user Signout
-  userOTPsignUp: (req, res) => {
-    res.render("user/otpLogin");
   },
 
   doOTPsignUp: async (req, res) => {
-    const { otp } = req.body;
-    if (otp === mailer.OTP) {
-      try {
-        // generate salt to hash password
-        const salt = await bcrypt.genSalt(10);
-        // now we set user password to hashed password
-        body.password = await bcrypt.hash(body.password, salt);
-        body.save().then(() => {
-          res.redirect("/user/login");
-        });
-      } catch {
-        console.log("error");
+    try{
+      const userData = req.body;
+      const verifyUser = await Otp.find({$and:[{email:userData.email},{otp:userData.otp}] });
+      if (verifyUser) {
+        Otp.deleteOne({ email:userData.email });
+          // generate salt to hash password
+          const salt = await bcrypt.genSalt(10);
+          // now we set user password to hashed password
+          userData.password = await bcrypt.hash(userData.password, salt);
+          const newUser = new User({
+            name: userData.name,
+            email: userData.email,
+            mobile_number: userData.mobile_number,
+            password: userData.password,
+          });
+          newUser.save().then(() => {
+            res.redirect("/login");
+          });
+      } else {
+        res.render('user/error500');
       }
-    } else {
-      console.log("error");
+    }catch{
+      res.render('user/error500');
     }
+    
   },
 
   // user Signout
   dosignOut: (req, res) => {
     try {
       req.session.destroy();
-      res.redirect("/user");
+      res.redirect("/");
     } catch {
-      console.log("error");
+      res.render('user/error500');
     }
   },
 };

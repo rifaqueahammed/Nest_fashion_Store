@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 // routers
 app.use("/admin", adminRouter);
-app.use("/user", userRouter);
+app.use("/", userRouter);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

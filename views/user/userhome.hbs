@@ -3,7 +3,7 @@
     {{#each products}}
       {{#unless this.isBlocked}}
         <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">
-          <a href="/user/getProduct/{{this._id}}" class="text-decoration-none">
+          <a href="/getProduct/{{this._id}}" class="text-decoration-none">
           <div class="card">
             <img
               src="/images/{{this._id}}.jpg"

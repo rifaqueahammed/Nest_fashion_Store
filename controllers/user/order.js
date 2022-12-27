@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 const mongoose = require("mongoose");
 const moment = require("moment");
 const Category = require("../../model/category");
@@ -12,73 +11,67 @@ moment().format();
 
 module.exports = {
   checkOut: async (req, res) => {
-    const categories = await Category.find().lean();
-    const usersession = req.session.user;
-    const userID = mongoose.Types.ObjectId(req.session.user._id);
-    const address = await User.aggregate([
-      {
-        $match: { _id: userID },
-      },
-    ]);
-
-    const cart = await Cart.aggregate([
-      { $match: { userid: userID } },
-      { $unwind: "$products" },
-      {
-        $project: {
-          productItem: "$products.productid",
-          productQuantity: "$products.quantity",
+    try {
+      const categories = await Category.find().lean();
+      const usersession = req.session.user;
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      const address = await User.findOne({ _id: userID });
+      const cart = await Cart.aggregate([
+        { $match: { userid: userID } },
+        { $unwind: "$products" },
+        {
+          $project: {
+            productItem: "$products.productid",
+            productQuantity: "$products.quantity",
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "products",
-          localField: "productItem",
-          foreignField: "_id",
-          as: "productDetails",
+        {
+          $lookup: {
+            from: "products",
+            localField: "productItem",
+            foreignField: "_id",
+            as: "productDetails",
+          },
         },
-      },
-      {
-        $project: {
-          productItem: 1,
-          productQuantity: 1,
-          productDetails: { $arrayElemAt: ["$productDetails", 0] },
+        {
+          $project: {
+            productItem: 1,
+            productQuantity: 1,
+            productDetails: { $arrayElemAt: ["$productDetails", 0] },
+          },
         },
-      },
-      {
-        $addFields: {
-          productPrice: {
-            $sum: {
-              $multiply: ["$productQuantity", "$productDetails.price"],
+        {
+          $addFields: {
+            productPrice: {
+              $sum: {
+                $multiply: ["$productQuantity", "$productDetails.price"],
+              },
             },
           },
         },
-      },
 
-      {
-        $facet: {
-          data: [{ $match: {} }],
-          totalAmount: [
-            {
-              $group: {
-                _id: "",
-                Amount: { $sum: "$productPrice" },
+        {
+          $facet: {
+            data: [{ $match: {} }],
+            totalAmount: [
+              {
+                $group: {
+                  _id: "",
+                  Amount: { $sum: "$productPrice" },
+                },
               },
-            },
-          ],
-          numberOfItems: [{ $count: "totalItems" }],
+            ],
+            numberOfItems: [{ $count: "totalItems" }],
+          },
         },
-      },
 
-      {
-        $unwind: "$numberOfItems",
-      },
-      {
-        $unwind: "$totalAmount",
-      },
-    ]);
-
-    try {
+        {
+          $unwind: "$numberOfItems",
+        },
+        {
+          $unwind: "$totalAmount",
+        },
+      ]);
       res.render("user/checkout", {
         user: true,
         categories,
@@ -86,8 +79,8 @@ module.exports = {
         address: address[0],
         cart: cart[0],
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -100,8 +93,8 @@ module.exports = {
       } else {
         res.json({ addressNotexist: true });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -212,8 +205,8 @@ module.exports = {
           }
         });
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -221,8 +214,8 @@ module.exports = {
     try {
       const usersession = req.session.user;
       res.render("user/orderconfirmation", { usersession });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -240,8 +233,8 @@ module.exports = {
         categories,
         orders,
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -287,8 +280,8 @@ module.exports = {
           productData,
         });
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -303,8 +296,8 @@ module.exports = {
       ).then(() => {
         next();
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -342,7 +335,7 @@ module.exports = {
       ]).then((result) => {
         for (let i = 0; i < result.length; i += 1) {
           const updatedStock =
-          result[i].productDetails.stock + result[i].productQuantity;
+            result[i].productDetails.stock + result[i].productQuantity;
           Product.updateOne(
             {
               _id: result[i].productDetails._id,
@@ -352,10 +345,10 @@ module.exports = {
             }
           ).then(() => {});
         }
-        res.redirect("/user/vieworders");
+        res.redirect("/vieworders");
       });
     } catch {
-      console.log("error");
+      res.render("user/error500");
     }
   },
 };

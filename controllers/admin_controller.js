@@ -18,7 +18,6 @@ module.exports = {
       const admin = await Admin.findOne({ email: body.email });
       if (admin) {
         if (body.password === admin.password) {
-          console.log("valid admin");
           req.session.admin = admin;
           res.redirect("/admin");
         } else {
@@ -28,22 +27,18 @@ module.exports = {
         console.log("email wrong");
       }
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 
   // admin home
   homeView: (req, res) => {
-    res.redirect('/admin/dashboard');
+    res.redirect("/admin/dashboard");
   },
 
   usersView: async (req, res) => {
     const users = await User.find().lean();
-    // if (req.session.admin) {
     res.render("admin/users", { users, admin: true });
-    // } else {
-    // res.redirect("/admin/login");
-    // }
   },
 
   // admin user block/unblock
@@ -56,7 +51,7 @@ module.exports = {
         }
       );
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 
@@ -69,7 +64,7 @@ module.exports = {
         }
       );
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 
@@ -79,7 +74,7 @@ module.exports = {
       req.session.destroy();
       res.redirect("/admin/login");
     } catch {
-      console.log("error");
+      res.render("admin/error500");
     }
   },
 };

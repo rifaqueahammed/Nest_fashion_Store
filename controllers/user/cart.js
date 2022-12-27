@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 const mongoose = require("mongoose");
 const Cart = require("../../model/cart");
 const Category = require("../../model/category");
@@ -22,7 +21,7 @@ module.exports = {
               { "products.productid": productID },
               { $inc: { "products.$.quantity": 1 } }
             ).then(() => {
-              res.redirect(`/user/getProduct/${productID}`);
+              res.redirect(`/getProduct/${productID}`);
             });
           } else {
             Cart.updateOne(
@@ -31,7 +30,7 @@ module.exports = {
                 $push: { products: { productid: productID, quantity: 1 } },
               }
             ).then(() => {
-              res.redirect(`/user/getProduct/${productID}`);
+              res.redirect(`/getProduct/${productID}`);
             });
           }
         });
@@ -46,11 +45,11 @@ module.exports = {
           ],
         });
         newUserCart.save().then(() => {
-          res.redirect(`/user/getProduct/${productID}`);
+          res.redirect(`/getProduct/${productID}`);
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -120,11 +119,11 @@ module.exports = {
           user: true,
           categories,
           usersession,
-          cartProducts
+          cartProducts,
         });
       });
-    } catch{
-      res.render('user/error500')
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -158,8 +157,8 @@ module.exports = {
           next();
         });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -228,8 +227,8 @@ module.exports = {
         },
       ]);
       res.json({ productQuantityChanged, productData, productRemoved });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 
@@ -247,8 +246,8 @@ module.exports = {
       ).then(() => {
         res.json({ productRemoved: true });
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      res.render("user/error500");
     }
   },
 };
