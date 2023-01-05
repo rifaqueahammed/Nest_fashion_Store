@@ -1,0 +1,82 @@
+ <div class="d-flex justify-content-center mt-3"><h2 class="">Banner</h2></div>
+ <div class="container mt-5">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+          <div class="d-flex justify-content-end col-12">
+            <a href="/admin/addbanner"
+              ><button class="btn  btn-outline-success">
+                Add Banner
+              </button></a
+            >
+          </div>
+        </div>
+        <div class="table-responsive mt-5 html-content">
+          <table
+            class="table text-start align-middle table-bordered table-hover mb-0"
+            id="table"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  class="col-3 col-md-3 col-lg-3 col-xl-2 text-center"
+                >
+                  Banner Name
+                </th>
+                <th
+                  scope="col"
+                  class="col-3 col-md-3 col-lg-3 col-xl-2 text-center"
+                >
+                  Image
+                </th>
+                <th
+                  scope="col"
+                  class="col-3 col-md-3 col-lg-3 col-xl-2 text-center"
+                >
+                  Banner Text
+                </th>
+                <th
+                  scope="col"
+                  class="col-3 col-md-3 col-lg-3 col-xl-2 text-center"
+                >
+                  Coupon
+                </th>
+                <th
+                  scope="col"
+                  class="col-3 col-md-3 col-lg-3 col-xl-2 text-center"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+             {{#each banners}}
+             {{#unless isDeleted}}
+              <tr>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                 {{this.banner}}
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <img
+                    src="/images/banner/{{this._id}}.jpg"
+                    alt=""
+                    style="width: 5rem"
+                  />
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  {{this.bannerText}}
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  {{this.couponName}}
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <a href="/admin/deletebanner/{{this._id}}"><button class="btn  btn-outline-danger">
+                     Delete
+                   </button></a>
+                </td>
+              </tr>
+              {{/unless}}
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>

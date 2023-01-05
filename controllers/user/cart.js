@@ -57,7 +57,7 @@ module.exports = {
     try {
       const usersession = req.session.user;
       const categories = await Category.find().lean();
-      const userID = mongoose.Types.ObjectId(req.params.userid);
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
       Cart.aggregate([
         { $match: { userid: userID } },
         { $unwind: "$products" },

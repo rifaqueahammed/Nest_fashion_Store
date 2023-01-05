@@ -27,9 +27,11 @@ router.post("/signup", userController.dosignUp);
 router.post("/otpValidation", userController.doOTPsignUp);
 
 /* Category management */
+router.get("/getCategoryPage/:id",categoryController.getCategoryPage);
 router.get("/getCategoryPage/:id",verifyLogin.verifyLoginUser,categoryController.getCategoryPage);
 
 /* Product management */
+router.get("/getProduct/:id",productController.getProductDetails);
 router.get("/getProduct/:id",verifyLogin.verifyLoginUser,productController.getProductDetails);
 
 /* Profile management */
@@ -45,12 +47,13 @@ router.get("/deletewishlistProduct/:id",verifyLogin.verifyLoginUser,wishlistCont
 
 /* Cart management */
 router.get("/addToCart/:id",verifyLogin.verifyLoginUser,cartController.addCart);
-router.get("/getCart/:userid",verifyLogin.verifyLoginUser,cartController.viewCart);
+router.get("/getCart",verifyLogin.verifyLoginUser,cartController.viewCart);
 router.post("/changeProductQuantity",verifyLogin.verifyLoginUser,cartController.changeProductQuantity,cartController.cartTotalAmounts);
 router.get("/deleteProduct/:id",verifyLogin.verifyLoginUser,cartController.deleteProduct);
 
 /* Order management */
 router.get("/checkOut",verifyLogin.verifyLoginUser,orderController.checkOut);
+router.post("/couponcheck",verifyLogin.verifyLoginUser,orderController.couponcheck,orderController.checkOut);
 router.get("/permenanAddress",verifyLogin.verifyLoginUser,orderController.permenantAddress);
 router.post("/placeorder",verifyLogin.verifyLoginUser,orderController.placeOrder,paymentController.generateRazorpay);
 router.get("/ordersuccess",verifyLogin.verifyLoginUser,orderController.orderConfirmation);

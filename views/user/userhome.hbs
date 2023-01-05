@@ -1,5 +1,21 @@
 <div class="container mt-5 mb-5">
-  <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-4">
+  
+  {{#if banner}}
+  {{#each banners}}
+  {{#unless this.isDeleted }}
+  <div class="card mt-2">
+  <img src="/images/banner/{{this._id}}.jpg" class="card-img" alt="...">
+  <div class="card-img-overlay">
+    <h3 class="card-title">{{this.banner}}</h3>
+    <h3>{{this.bannerText}}</h3>
+    <h5 class="card-text">Claim using<h2><strong class="text-danger">{{this.couponName}}</strong></h2></h5>
+  </div>
+  </div>
+  {{/unless}}
+  {{/each}}
+{{/if}}
+
+  <div class="mt-5 row justify-content-center row-cols-1 row-cols-md-3 g-3">
     {{#each products}}
       {{#unless this.isBlocked}}
         <div class="col w-auto m-4 shadow p-3 mb-5 bg-body rounded">

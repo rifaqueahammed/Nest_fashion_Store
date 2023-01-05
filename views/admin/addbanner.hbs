@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-center mt-3"><h2 class="">Banner</h2></div>
+<div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+          <div class="col-md-10 mx-auto">
+            <div class="rounded h-100 p-4 text-center">
+              <form
+                action="/admin/addBanner"
+                method="POST"
+                enctype="multipart/form-data"
+                onsubmit="return validateBanner(this);"
+              >
+                <div class="mb-3">
+                  <label for="highlight" class="form-label">Banner Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="banner"
+                    name="banner"
+                  />
+                  <p id="bannerError" style="color: red"></p>
+                </div>
+                <div class="mb-3">
+                  <label for="image" class="form-label">Coupon</label>
+                  <select
+                    class="form-select"
+                    id="coupon"
+                    name="couponName"
+                    required
+                  >
+                    {{#each coupons}}
+                    <option value="{{this.couponName}}">
+                     {{this.couponName}}
+                    </option>
+                   {{/each}}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="image" class="form-label">Add Banner Image</label>
+                  <input
+                    class="form-control form-control-sm"
+                    id="image"
+                    name="image"
+                    type="file"
+                    multiple
+                  />
+                  <p id="imageError" style="color: red"></p>
+                </div>
+                <div class="">
+                  <label for="image" class="form-label">Banner Text</label>
+                  <textarea
+                    class="form-control"
+                    id="bannertext"
+                    name="bannertext"
+                    style="height: 150px"
+                  ></textarea>
+                  <p id="bannerTextError" style="color: red"></p>
+                </div>
+                <div class="mt-3 text-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>

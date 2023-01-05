@@ -22,9 +22,62 @@
                     <div> <h6 class="text-muted"><span><i class="bi bi-currency-rupee"></i>{{this.productPrice}}</h6></div>
                 </li>
                  {{/each}}
+                  <!-- coupon -->
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Coupon Discount</span>
+                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Apply Coupon
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Apply Coupon</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="card p-2"  id="couponcheck" action="/couponcheck" method="post" >
+                <div class="input-group">
+                    <input type="text" class="form-control" name="promocode" placeholder="Promo code">
+                </div>
+                <div class="input-group">
+                    <input type="hidden" class="form-control" name="total" value="{{cart.totalAmount.Amount}}">
+                </div>
+                 {{#each coupons}}
+                 <div>
+                     <hr>
+                        <h5 class="text-danger">{{this.couponName}}</h5>
+                        <p>{{this.discount}} % Discount</p>
+                        <p>Maximum Limit Rs.{{this.maxLimit}}</p>
+                        <p>Valid Upto:{{this.expirationTime}}</p>
+                  </div>
+                    {{/each}}
+                <div class="modal-footer">
+                
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Apply</button>
+      </div>
+        </form> 
+      </div>
+      
+    </div>
+  </div>
+</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Total MRP </span>
+                    <strong id="total-amount"><i class="bi bi-currency-rupee"></i>{{cart.totalAmount.Amount}}</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Discount:</span>
+                    <strong id="discount"><span>-</span><i class="bi bi-currency-rupee"></i>{{discount}}</strong>
+                </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total </span>
-                    <strong id="total-amount"><span><i class="bi bi-currency-rupee"></i>{{cart.totalAmount.Amount}}</strong>
+                    <strong id="total"><i class="bi bi-currency-rupee"></i>{{total}}</strong>
                 </li>
             </ul>
         </div>
@@ -72,6 +125,9 @@
                         <label for="pincode">Pincode</label>
                         <input type="text" class="form-control" id="pincode" name="pincode" placeholder="">
                         <p id="pincodeError" style="color: red"></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <input type="hidden" class="form-control" id="final_total" name="final_total" placeholder="" value="{{total}}">
                     </div>
                 </div>
                 <hr class="mb-4">
@@ -177,6 +233,8 @@ $("#placeorder-form").submit((e) => {
  
 });
 
+
+
 // online-payment
 
 function razorPayPayment(order){
@@ -242,6 +300,7 @@ function permanentAddress(){
         document.getElementById('name').value = response.address.name;
         document.getElementById('address-line1').value = response.address.permanentAddress.housename;
         document.getElementById('address-line2').value = response.address.permanentAddress.area+","+response.address.permanentAddress.landmark+","+response.address.permanentAddress.district+","+response.address.permanentAddress.postoffice;
+         document.getElementById('country').value = response.address.permanentAddress.country;
         document.getElementById('state').value = response.address.permanentAddress.state;
         document.getElementById('pincode').value = response.address.permanentAddress.pincode;
       }

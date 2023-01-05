@@ -6,6 +6,7 @@ const User = require("../../model/user");
 const Cart = require("../../model/cart");
 const Order = require("../../model/order");
 const Product = require("../../model/product");
+const Coupon = require("../../model/coupon");
 
 moment().format();
 
@@ -16,6 +17,7 @@ module.exports = {
       const usersession = req.session.user;
       const userID = mongoose.Types.ObjectId(req.session.user._id);
       const address = await User.findOne({ _id: userID });
+      const coupons = await Coupon.find().lean();
       const cart = await Cart.aggregate([
         { $match: { userid: userID } },
         { $unwind: "$products" },
@@ -72,12 +74,22 @@ module.exports = {
           $unwind: "$totalAmount",
         },
       ]);
+      let discount;
+      if (req.discount) {
+        discount = req.discount;
+      } else {
+        discount = 0;
+      }
+      const total = cart[0].totalAmount.Amount - discount;
       res.render("user/checkout", {
         user: true,
         categories,
+        coupons,
         usersession,
         address: address[0],
         cart: cart[0],
+        discount,
+        total,
       });
     } catch {
       res.render("user/error500");
@@ -175,7 +187,7 @@ module.exports = {
             pincode: addressDetails.pincode,
           },
           orderItems: cartproducts.products,
-          totalAmount: cartDetails.totalAmount.Amount,
+          totalAmount: addressDetails.final_total,
           orderStatus: status,
           paymentMethod: addressDetails.paymentMethod,
           orderDate: moment().format("MMM Do YY"),
@@ -347,6 +359,38 @@ module.exports = {
         }
         res.redirect("/vieworders");
       });
+    } catch {
+      res.render("user/error500");
+    }
+  },
+
+  couponcheck: async (req, res, next) => {
+    try {
+      const userID = mongoose.Types.ObjectId(req.session.user._id);
+      const couponcode = req.body.promocode;
+      const totalMRP = req.body.total;
+      let discount = 0;
+      const couponavailable = await Coupon.findOne(
+        { couponName: couponcode },
+        { users: { $elemMatch: { userId: userID } } }
+      );
+      if (couponavailable.users.length > 0) {
+        req.discount = discount;
+        next();
+      } else {
+        const coupon = await Coupon.findOne({ couponName: couponcode }).lean();
+        discount = (coupon.discount * totalMRP) / 100;
+        if (discount > coupon.maxLimit) {
+          discount = coupon.maxLimit;
+        }
+        req.discount = discount;
+        Coupon.updateOne(
+          { couponName: couponcode },
+          { $push: { users: { userId: userID } } }
+        ).then(() => {
+          next();
+        });
+      }
     } catch {
       res.render("user/error500");
     }

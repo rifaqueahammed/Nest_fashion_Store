@@ -7,6 +7,7 @@ const categoryController = require("../controllers/admin/category");
 const productController = require("../controllers/admin/products");
 const orderController = require("../controllers/admin/orders");
 const dashboardController = require("../controllers/admin/dashboard");
+const couponController = require("../controllers/admin/coupon");
 
 
 /* GET home page. */
@@ -34,6 +35,17 @@ router.post("/add-product",verifyLogin.verifyLoginAdmin,productController.addPro
 router.get("/edit-product/:id",verifyLogin.verifyLoginAdmin,productController.editProductpage);
 router.post("/edit-product/:id",verifyLogin.verifyLoginAdmin,productController.editProduct);
 router.get("/block-product/:id",verifyLogin.verifyLoginAdmin,productController.blockProduct);
+
+// coupon
+router.get("/coupon",verifyLogin.verifyLoginAdmin,couponController.coupon);
+router.post("/add-coupon",verifyLogin.verifyLoginAdmin,couponController.addCoupon);
+router.post("/editCoupon/:id",verifyLogin.verifyLoginAdmin,couponController.editCoupon);
+router.get("/deleteCoupon/:id",verifyLogin.verifyLoginAdmin,couponController.deleteCoupon);
+router.get("/banner",verifyLogin.verifyLoginAdmin,couponController.banner);
+router.get("/addbanner",verifyLogin.verifyLoginAdmin,couponController.addBanner);
+router.post("/addbanner",verifyLogin.verifyLoginAdmin,couponController.addBannerpost);
+router.get("/deletebanner/:id",verifyLogin.verifyLoginAdmin,couponController.deleteBanner);
+
 
 // orders
 router.get("/orders",verifyLogin.verifyLoginAdmin,orderController.orders);
